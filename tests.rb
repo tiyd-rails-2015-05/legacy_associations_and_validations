@@ -23,6 +23,16 @@ ApplicationMigration.migrate(:up)
 # Finally!  Let's test the thing.
 class ApplicationTest < Minitest::Test
 
+  def test_school_has_many_terms
+    myschool = School.create
+    fall = Term.create
+    spring = Term.create
+    spring.update(school_id: myschool.id)
+    fall.update(school_id: myschool.id)
+
+    assert_equal 2, myschool.terms.count
+  end
+
   def test_truth
     assert true
   end
