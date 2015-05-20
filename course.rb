@@ -17,6 +17,9 @@ class Course < ActiveRecord::Base
   has_many :readings, through: :lessons
   has_many :course_instructors, dependent: :restrict_with_error
 
+  validates :name, presence: true
+  validates :course_code, presence: true, uniqueness: { scope: :term_id }, format: { with: /\A[a-z]{3}\d{3}/i }
+
   def self.example_courses
     self.where(public: true).order("id DESC").first(5)
   end

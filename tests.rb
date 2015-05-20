@@ -60,7 +60,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_has_many_students
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", term_id: 1, course_code: "SCI402")
     joe = CourseStudent.create(course_id: science.id)
     anna = CourseStudent.create(course_id: science.id)
 
@@ -68,7 +68,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_with_students_cant_be_deleted
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     joe = CourseStudent.create(course_id: science.id)
     anna = CourseStudent.create(course_id: science.id)
 
@@ -76,7 +76,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_has_many_assignments
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     monday = Assignment.create(course_id: science.id)
     tuesday = Assignment.create(course_id: science.id)
 
@@ -84,7 +84,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignments_get_deleted_with_course
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     monday = Assignment.create(course_id: science.id)
     tuesday = Assignment.create(course_id: science.id)
 
@@ -99,8 +99,8 @@ class ApplicationTest < Minitest::Test
     myschool = School.create(name: "The Iron Yard")
     fall = Term.create(school_id: myschool.id, name: "Fall", starts_on: 2015-05-04,
     ends_on: 2015-07-24)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     assert_equal 2, myschool.courses.count
   end
@@ -111,15 +111,42 @@ class ApplicationTest < Minitest::Test
     end
   end
 
+  def test_courses_must_be_unique
+    fall = Term.create(school_id: 1)
+    spring = Term.create(school_id: 1)
+    math = Course.create!(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create!(name: "Science", term_id: fall.id, course_code: "SCI402")
+    history2 = Course.create!(name: "History", term_id: spring.id, course_code: "SCI402")
+
+    assert math
+    assert science
+    assert_raises(ActiveRecord::RecordInvalid) do
+      history = Course.create!(name: "History", term_id: fall.id, course_code: "SCI402")
+    end
+    assert history2
+
+  end
+
   def test_readings_must_order_number_lesson_id_and_url
     hyperion = Reading.create(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
 
     assert hyperion
   end
 
+  def test_reading_url_must_start_with_http
+    assert Reading.create!(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
+    assert Reading.create!(order_number: 2, lesson_id: 1, url: "https://hyperion.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Reading.create!(order_number: 2, lesson_id: 1, url: "htt://hyperion.com")
+    end
+  end
+
   def test_truth
     assert true
   end
+
+
+
   ###Person B
   def test_create_lesson
     assert Lesson.create(name: "Validation")
@@ -156,7 +183,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assign_lesson_to_course
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
     assert_equal 2, rails.lessons.count
@@ -164,7 +191,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_lessons_destroyed_with_course
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
     rails.destroy!
