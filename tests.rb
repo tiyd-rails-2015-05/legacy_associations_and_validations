@@ -98,10 +98,18 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_has_course_id
-    project = Assignment.new(course_id: "Project")
-    weekend_project = Assignment.new({})
+    project = Assignment.new(course_id: 2, name: "Project")
+    weekend_project = Assignment.new(name: "Weekend Project")
 
     assert project.save
     refute weekend_project.save
+  end
+
+  def test_assignment_has_name
+    project1 = Assignment.new(course_id: 1, name: "Project1")
+    weekend_project1 = Assignment.new(course_id: 2)
+
+    assert project1.save
+    refute weekend_project1.save
   end
 end
