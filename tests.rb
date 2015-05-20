@@ -1,6 +1,7 @@
 # Basic test requires
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'byebug'
 
 # Include both the migration and the app itself
 require './migration'
@@ -71,8 +72,6 @@ class ApplicationTest < Minitest::Test
     assert_equal math, ews.courses.first
   end
 
-
-
   def test_lessons_readings_association
     world_war_2 = Lesson.create(name: "World War 2")
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
@@ -83,6 +82,15 @@ class ApplicationTest < Minitest::Test
     free_play = Lesson.new
     assert planning.save
     refute free_play.save
+  end
+
+
+  def test_readings_destroyed_with_lessons
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+    assert_equal 1, Lesson.count
+    world_war_2.destroy
+    assert_equal 0, Lesson.count
   end
 
 
