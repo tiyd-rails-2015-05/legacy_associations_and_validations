@@ -78,4 +78,12 @@ class ApplicationTest < Minitest::Test
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
   end
 
+  def test_lessons_must_have_names
+    planning = Lesson.new(name: "how to plan stuff")
+    free_play = Lesson.new
+    assert planning.save
+    refute free_play.save
+  end
+
+
 end
