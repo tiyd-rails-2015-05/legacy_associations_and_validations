@@ -42,5 +42,5 @@ class ApplicationTest < Minitest::Test
     math = Course.create(name: "calc 2")
     assert_equal spring, ews.terms.first
   end
-
+  
 end
