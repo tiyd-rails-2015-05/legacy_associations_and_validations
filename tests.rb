@@ -93,5 +93,17 @@ class ApplicationTest < Minitest::Test
     assert_equal 0, Lesson.count
   end
 
+  def test_readings_must_have_attributes
+    lord_of_the_rings= Reading.new(order_number: 4, lesson_id: 6, url: "http://www.thebest.com")
+    blank = Reading.new
+    assert lord_of_the_rings.save
+    refute blank.save
+  end
 
+  def test_url_correct
+    clockwork_orange = Reading.new(order_number: 4, lesson_id: 6, url: "thebest")
+    lord_of_the_rings= Reading.new(order_number: 4, lesson_id: 6, url: "http://www.thebest.com")
+    refute clockwork_orange.save
+    assert lord_of_the_rings.save
+  end
 end
