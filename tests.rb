@@ -72,6 +72,15 @@ class ApplicationTest < Minitest::Test
     assert math = Course.create(name: "math")
   end
 
+  def test_add_lessons_course
+    math = Course.create(name: "math")
+    lesson_one = Lesson.create(name: "Lesson One")
+    lesson_two = Lesson.create(name: "Lesson Two")
+
+    assert math.add_lesson(lesson_one)
+    assert math.add_lesson(lesson_two)
+  end
+
   def test_school_term_association
     school = School.new(name: "NCSU")
     term1 = Term.new(name: "Fall")
