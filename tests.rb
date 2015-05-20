@@ -45,17 +45,16 @@ class ApplicationTest < Minitest::Test
   def test_term_has_many_courses
     fall = Term.create(school_id: 1, name: "Fall", starts_on: 2015-05-04,
     ends_on: 2015-07-24)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT402")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     assert_equal 2, fall.courses.count
   end
 
   def test_term_with_courses_cant_be_deleted
     fall = Term.create(name: "Fall", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: 1)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
-
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT402")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
     refute fall.destroy
   end
 
@@ -116,12 +115,12 @@ class ApplicationTest < Minitest::Test
     spring = Term.create(school_id: 1)
     math = Course.create!(name: "Math", term_id: fall.id, course_code: "MAT304")
     science = Course.create!(name: "Science", term_id: fall.id, course_code: "SCI402")
-    history2 = Course.create!(name: "History", term_id: spring.id, course_code: "SCI402")
+    history2 = Course.create!(name: "History", term_id: spring.id, course_code: "HIS402")
 
     assert math
     assert science
     assert_raises(ActiveRecord::RecordInvalid) do
-      history = Course.create!(name: "History", term_id: fall.id, course_code: "SCI402")
+      history = Course.create!(name: "History", term_id: fall.id, course_code: "HIS402")
     end
     assert history2
 
@@ -200,7 +199,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_courses_associated_with_course_instructors
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     mason = CourseInstructor.create(course_id: rails.id)
     assert_equal 1, rails.course_instructors.count
     assert_equal [mason], rails.course_instructors
@@ -208,7 +207,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_courses_with_instructors_cant_be_destroyed
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     mason = CourseInstructor.create(course_id: rails.id)
     assert_raises(ActiveRecord::RecordNotDestroyed) do
       rails.destroy!
@@ -218,7 +217,7 @@ class ApplicationTest < Minitest::Test
   #in-class assignment stuff here
 
   def test_courses_have_many_readings_through_lessons
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     book = Reading.create(lesson_id: rails.id, order_number: 2, url: "http://hyperion.com")
     other_book = Reading.create(lesson_id: rails.id, order_number: 3, url: "http://hanother.com")
