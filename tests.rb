@@ -141,6 +141,14 @@ class ApplicationTest < Minitest::Test
     assert math.readings.count
   end
 
+  def test_school_has_name
+    assert School.create(name: "NC State")
+    assert_raises ActiveRecord::RecordInvalid do
+    School.create!(name: "")
+  end
+  
+  end
+
   def test_school_term_association
     school = School.new(name: "NCSU")
     term1 = Term.new(name: "Fall")
