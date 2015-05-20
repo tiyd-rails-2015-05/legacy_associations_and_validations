@@ -1,6 +1,7 @@
 # Basic test requires
 require 'minitest/autorun'
 require 'minitest/pride'
+require 'byebug'
 
 # Include both the migration and the app itself
 require './migration'
@@ -55,5 +56,14 @@ class ApplicationTest < Minitest::Test
     world_war_2 = Lesson.create(name: "World War 2")
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
   end
+
+  def test_readings_destroyed_with_lessons
+    world_war_2 = Lesson.new(name: "World War 2")
+    american_involvement = Reading.new(caption: "American Involvement", lesson_id: world_war_2.id)
+    world_war_2.destroy
+    refute american_involvement.reload
+  end
+
+
 
 end
