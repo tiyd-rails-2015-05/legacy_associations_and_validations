@@ -1,4 +1,5 @@
 class Reading < ActiveRecord::Base
+  belongs_to :lesson
 
   default_scope { order('order_number') }
 
