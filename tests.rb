@@ -68,4 +68,8 @@ class ApplicationTest < Minitest::Test
     assert_equal 0, Reading.count
   end
 
+  def test_create_course
+    assert math = Course.create(name: "math")
+  end
+
 end
