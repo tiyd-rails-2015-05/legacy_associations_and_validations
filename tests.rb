@@ -54,4 +54,18 @@ class ApplicationTest < Minitest::Test
     assert_equal 2, lesson_one.readings.count
   end
 
+  def test_destroy_lesson_with_reading
+    lesson_one = Lesson.create(name: "Lesson One")
+    reading_one = Reading.create(caption:"Reading One", url:"google.com")
+    reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
+    lesson_one.add_reading(reading_one)
+    lesson_one.add_reading(reading_two)
+    reading_one.save
+    reading_two.save
+    assert lesson_one.destroy
+
+    assert_equal 0, Lesson.count
+    assert_equal 0, Reading.count
+  end
+
 end
