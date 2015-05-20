@@ -111,8 +111,15 @@ class ApplicationTest < Minitest::Test
   def test_courses_associated_course_instructors
     us_history = Course.create(name: "US History")
     mr_turner = CourseInstructor.create(course_id: us_history.id)
-
     assert_equal mr_turner, us_history.course_instructors.first
+  end
+
+  def test_courses_with_students_no_delete
+    us_history = Course.create(name: "US History")
+    mr_turner = CourseInstructor.create(course_id: us_history.id)
+    assert_equal 1, Course.count
+    us_history.explode
+    assert_equal 1, Course.count
   end
 
 end
