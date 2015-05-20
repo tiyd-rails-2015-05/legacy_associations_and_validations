@@ -129,6 +129,14 @@ class ApplicationTest < Minitest::Test
     assert hyperion
   end
 
+  def test_reading_url_must_start_with_http
+    assert Reading.create!(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
+    assert Reading.create!(order_number: 2, lesson_id: 1, url: "https://hyperion.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Reading.create!(order_number: 2, lesson_id: 1, url: "htt://hyperion.com")
+    end
+  end
+
   def test_truth
     assert true
   end
