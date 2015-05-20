@@ -1,4 +1,6 @@
 class Term < ActiveRecord::Base
+  belongs_to :school
+  has_many :courses, dependent: :restrict_with_error
 
   default_scope { order('ends_on DESC') }
 
@@ -7,4 +9,9 @@ class Term < ActiveRecord::Base
   def school_name
     school ? school.name : "None"
   end
+
+  def assign_course(course)
+    courses << course
+  end
+
 end

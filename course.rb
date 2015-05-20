@@ -1,4 +1,6 @@
 class Course < ActiveRecord::Base
+  belongs_to :term
+  has_many :course_students, dependent: :restrict_with_error
 
   default_scope { order("courses.term_id DESC, courses.course_code, courses.id DESC") }
 
@@ -139,5 +141,9 @@ class Course < ActiveRecord::Base
     time_cards = []
     course_students.each {|cs| time_cards += cs.time_cards.open}
     time_cards
+  end
+
+  def assign_student(student)
+    course_students << student
   end
 end
