@@ -149,6 +149,15 @@ class ApplicationTest < Minitest::Test
     end
   end
 
+  def test_assignment_cant_be_due_before_assigned
+    equations = Assignment.create!(name: "worksheet", due_at: DateTime.new(2015, 2, 9), active_at: DateTime.new(2015, 2, 5), course_id: 1, percent_of_grade: 15)
+
+    assert equations
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Assignment.create!(name: "worksheet", due_at: DateTime.new(2015, 2, 2), active_at: DateTime.new(2015, 2, 5), course_id: 1, percent_of_grade: 15)
+    end
+  end
+
   def test_truth
     assert true
   end

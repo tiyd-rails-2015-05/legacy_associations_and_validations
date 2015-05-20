@@ -1,3 +1,5 @@
+require 'date'
+
 class Assignment < ActiveRecord::Base
 
   scope :active_for_students, -> { where("active_at <= ? AND due_at >= ? AND students_can_submit = ?", Time.now, Time.now, true) }
