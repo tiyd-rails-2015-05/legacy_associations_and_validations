@@ -98,18 +98,26 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_has_course_id
-    project = Assignment.new(course_id: 2, name: "Project")
-    weekend_project = Assignment.new(name: "Weekend Project")
+    project = Assignment.new(course_id: 2, name: "Project", percent_of_grade: 0.76)
+    weekend_project = Assignment.new(name: "Weekend Project", percent_of_grade: 0.96)
 
     assert project.save
     refute weekend_project.save
   end
 
   def test_assignment_has_name
-    project1 = Assignment.new(course_id: 1, name: "Project1")
-    weekend_project1 = Assignment.new(course_id: 2)
+    project1 = Assignment.new(course_id: 1, name: "Project1", percent_of_grade: 0.88)
+    weekend_project1 = Assignment.new(course_id: 2, percent_of_grade: 0.90)
 
     assert project1.save
     refute weekend_project1.save
+  end
+
+  def test_assignment_has_percent_of_grade
+    project2 = Assignment.new(course_id: 1, name: "Project2", percent_of_grade: 0.50)
+    weekend_project2 = Assignment.new(course_id: 2, name: "Weekend Project2")
+
+    assert project2.save
+    refute weekend_project2.save
   end
 end
