@@ -42,22 +42,22 @@ class ApplicationTest < Minitest::Test
 
   def test_term_has_many_courses
     fall = Term.create
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     assert_equal 2, fall.courses.count
   end
 
   def test_term_with_courses_cant_be_deleted
     fall = Term.create
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     refute fall.destroy
   end
 
   def test_course_has_many_students
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", term_id: 1, course_code: "SCI402")
     joe = CourseStudent.create(course_id: science.id)
     anna = CourseStudent.create(course_id: science.id)
 
@@ -65,7 +65,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_with_students_cant_be_deleted
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     joe = CourseStudent.create(course_id: science.id)
     anna = CourseStudent.create(course_id: science.id)
 
@@ -73,7 +73,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_has_many_assignments
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     monday = Assignment.create(course_id: science.id)
     tuesday = Assignment.create(course_id: science.id)
 
@@ -81,7 +81,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignments_get_deleted_with_course
-    science = Course.create(name: "Science")
+    science = Course.create(name: "Science", course_code: "SCI304")
     monday = Assignment.create(course_id: science.id)
     tuesday = Assignment.create(course_id: science.id)
 
@@ -95,8 +95,8 @@ class ApplicationTest < Minitest::Test
   def test_school_has_many_courses
     myschool = School.create
     fall = Term.create(school_id: myschool.id)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     assert_equal 2, myschool.courses.count
   end
@@ -105,6 +105,22 @@ class ApplicationTest < Minitest::Test
     assert_raises(ActiveRecord::RecordInvalid) do
       Lesson.create!(name: "")
     end
+  end
+
+  def test_courses_must_be_unique
+    fall = Term.create(school_id: 1)
+    spring = Term.create(school_id: 1)
+    math = Course.create!(name: "Math", term_id: fall.id, course_code: "MAT304")
+    science = Course.create!(name: "Science", term_id: fall.id, course_code: "SCI402")
+    history2 = Course.create!(name: "History", term_id: spring.id, course_code: "SCI402")
+
+    assert math
+    assert science
+    assert_raises(ActiveRecord::RecordInvalid) do
+      history = Course.create!(name: "History", term_id: fall.id, course_code: "SCI402")
+    end
+    assert history2
+
   end
 
   def test_readings_must_order_number_lesson_id_and_url
@@ -116,6 +132,9 @@ class ApplicationTest < Minitest::Test
   def test_truth
     assert true
   end
+
+
+
   ###Person B
   def test_create_lesson
     assert Lesson.create(name: "Validation")
@@ -151,14 +170,14 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assign_lesson_to_course
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
     assert_equal 2, rails.lessons.count
   end
 
   def test_lessons_destroyed_with_course
-    rails = Course.create(name: "Rails")
+    rails = Course.create(name: "Rails", course_code: "RAI304")
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
     rails.destroy!
