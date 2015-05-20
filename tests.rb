@@ -117,7 +117,28 @@ class ApplicationTest < Minitest::Test
 
     assert prof.save
     refute math.destroy
+  end
 
+  def test_course_has_many_readings
+
+    math = Course.create(name: "math")
+    lesson_one = Lesson.create(name: "Lesson One")
+    lesson_two = Lesson.create(name: "Lesson Two")
+    math.add_lesson(lesson_one)
+    math.add_lesson(lesson_two)
+    lesson_one.save
+    lesson_two.save
+    reading_one = Reading.create(caption:"Reading One", url:"google.com")
+    reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
+    reading_three = Reading.create(caption:"Reading Three", url:"reddit.com")
+    lesson_one.add_reading(reading_one)
+    lesson_one.add_reading(reading_two)
+    lesson_two.add_reading(reading_three)
+    reading_one.save
+    reading_two.save
+    reading_three.save
+
+    assert math.readings.count
   end
 
   def test_school_term_association
