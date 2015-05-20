@@ -97,9 +97,15 @@ class ApplicationTest < Minitest::Test
   def test_lessons_associated_courses
     us_history = Course.create(name: "US History")
     world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
-
-
+    assert_equal 1, us_history.lessons.count
   end
 
+  def test_lessons_destroyed_with_courses
+    us_history = Course.create(name: "US History")
+    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
+    assert_equal 1, us_history.lessons.count
+    us_history.destroy
+    assert_equal 0, us_history.lessons.count
+  end
 
 end
