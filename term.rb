@@ -1,4 +1,6 @@
 class Term < ActiveRecord::Base
+  belongs_to :schools
+  has_many :courses
 
   default_scope { order('ends_on DESC') }
 
