@@ -66,44 +66,43 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_user_have_first_name
-    adam = User.new(first_name: "Adam", last_name: "Scott", email: "adams@yahoo.com")
-    sue = User.new(last_name: "Harrison", email: "sue@yahoo.com")
+    adam = User.new(first_name: "Adam", last_name: "Scott", email: "adams@yahoo.com", photo_url: "http://yougotmyphoto.com")
+    sue = User.new(last_name: "Harrison", email: "sue@yahoo.com", photo_url: "http://yougotmyphoto.com")
 
     assert adam.save
     refute sue.save
   end
 
   def test_user_have_last_name
-    sam = User.new(first_name: "Sam", last_name: "Adams", email: "sadams@gmail.com")
-    sue = User.new(first_name: "Sue", email: "sue@yahoo.com")
+    sam = User.new(first_name: "Sam", last_name: "Adams", email: "sadams@gmail.com", photo_url: "http://yougotmyphoto.com")
+    sue = User.new(first_name: "Sue", email: "sue@yahoo.com", photo_url: "http://yougotmyphoto.com")
 
     assert sam.save
     refute sue.save
   end
 
   def test_user_have_email
-    joe = User.new(first_name: "Joe", last_name: "Adams", email: "jadams@gmail.com")
-    sue = User.new(first_name: "Sue", last_name: "Harris")
+    joe = User.new(first_name: "Joe", last_name: "Adams", email: "jadams@gmail.com", photo_url: "http://yougotmyphoto.com")
+    sue = User.new(first_name: "Sue", last_name: "Harris", photo_url: "http://yougotmyphoto.com")
 
     assert joe.save
     refute sue.save
   end
 
   def test_user_have_unique_email
-    brad = User.new(first_name: "Brad", last_name: "Adams", email: "badams@gmail.com")
-    helen = User.new(first_name: "Helen", last_name: "Harris", email: "badams@gmail.com")
+    brad = User.new(first_name: "Brad", last_name: "Adams", email: "badams@gmail.com", photo_url: "http://yougotmyphoto.com")
+    helen = User.new(first_name: "Helen", last_name: "Harris", email: "badams@gmail.com", photo_url: "http://yougotmyphoto.com")
 
     assert brad.save
     refute helen.save
   end
 
-  def test_user_has_useable_email
-    trent = User.new(first_name: "Trent", last_name: "Adams", email: "adams@gmail.com")
-    sue = User.new(first_name: "Sue", last_name: "James", email: "sue@yahoo3.com")
-    kate = User.new(first_name: "Kate", last_name: "Harris", email: "kate.gmail.com")
-    erica = User.new(first_name: "Erica", last_name: "Jackson", email: "ejackson4@yahoocom")
-    cash = User.new(first_name: "Cash", last_name: "Price", email: "cash@yahoo3.co")
-
+  def test_user_has_correctly_formatted_email
+    trent = User.new(first_name: "Trent", last_name: "Adams", email: "adams@gmail.com", photo_url: "http://yougotmyphoto.com")
+    sue = User.new(first_name: "Sue", last_name: "James", email: "sue@yahoo3.com", photo_url: "http://yougotmyphoto.com")
+    kate = User.new(first_name: "Kate", last_name: "Harris", email: "kate.gmail.com", photo_url: "http://yougotmyphoto.com")
+    erica = User.new(first_name: "Erica", last_name: "Jackson", email: "ejackson4@yahoocom", photo_url: "http://yougotmyphoto.com")
+    cash = User.new(first_name: "Cash", last_name: "Price", email: "cash@yahoo3.co", photo_url: "http://yougotmyphoto.com")
 
     assert trent.save
     assert sue.save
@@ -111,6 +110,19 @@ class ApplicationTest < Minitest::Test
     refute erica.save
     refute cash.save
   end
+
+  def test_user_has_correctly_formatted_url_photo
+    allen = User.new(first_name: "Allen", last_name: "Heems", email: "aheems@gmail.com", photo_url: "http://yougotmyphoto.com")
+    scar = User.new(first_name: "Scar", last_name: "James", email: "scar@yahoo.com", photo_url: "https://ihaveyourphoto.com")
+    slate = User.new(first_name: "Slate", last_name: "Harris", email: "slate@gmail.com", photo_url: "htps://thisisnotaurl.com")
+    bob = User.new(first_name: "Bob", last_name: "Harris", email: "bob@gmail.com", photo_url: "shttps://thisisnotaurl.com")
+
+    assert allen.save
+    assert scar.save
+    refute slate.save
+    refute bob.save
+  end
+
 
   def test_assignment_has_course_id
     project = Assignment.new(course_id: 2, name: "Project", percent_of_grade: 0.76)

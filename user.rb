@@ -1,8 +1,9 @@
 class User < ActiveRecord::Base
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, presence: true, uniqueness: true, format: {with: /[^@|\s]+@[a-z0-9]+\.([a-z]{3})/i}
-  # validates :phono_url, format: {with://i, on: :}
+  validates :email, uniqueness: true, format: {with: /\A[^@|\s]+@[a-z0-9]+\.([a-z]{3})\z/i}
+  #presence no longer needed in email due to format
+  validates :photo_url, format: {with: /\A(https?:\/\/)\w/i}
 
   scope :want_to_be_instructors, -> { where(wants_to_be_instructor: true) }
   scope :instructors_for_school_id, ->(school_id) { where(school_id: school_id, instructor: true) }
