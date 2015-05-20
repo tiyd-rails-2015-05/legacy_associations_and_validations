@@ -111,13 +111,13 @@ class ApplicationTest < Minitest::Test
     end
   end
 
-  def test_lessons_have_pre_class_assignments
-    equations = Lesson.create(name: "Equations")
-    worksheet = Assignment.create(name: "Worksheet")
-    Lesson.linked_to_assignment(worksheet)
-
-    assert_equal 1, equations.pre_class_assignments.count
-  end
+  # def test_lessons_have_pre_class_assignments
+  #   equations = Lesson.create(name: "Equations")
+  #   worksheet = Assignment.create(name: "Worksheet")
+  #   Lesson.linked_to_assignment(worksheet)
+  #
+  #   assert_equal 1, equations.pre_class_assignments.count
+  # end
 
   def test_courses_must_be_unique
     fall = Term.create(school_id: 1)

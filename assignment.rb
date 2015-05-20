@@ -5,12 +5,20 @@ class Assignment < ActiveRecord::Base
   delegate :code_and_name, :color, to: :course, prefix: true
 
   belongs_to :course
+  has_many :assignment_grades
   validates :name, presence: true
   validates :course_id, presence: true
   validates :percent_of_grade, presence: true
+  validate :check_due_date
 
   def status(user = nil)
     AssignmentStatus.new(assignment: self, user: user)
+  end
+
+  def check_due_date
+    if due_at && active_at
+      false if due_at <= active_at
+    end
   end
 
   def turn_in(answers, user, final=true)

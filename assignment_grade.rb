@@ -5,6 +5,8 @@ class AssignmentGrade < ActiveRecord::Base
   delegate :course, to: :assignment
   delegate :full_name, to: :course_student
 
+  belongs_to :assignment
+
   def percent_of_grade
     assignment.percent_of_grade
   end
