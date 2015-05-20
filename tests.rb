@@ -66,18 +66,26 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_user_have_first_name
-    adam = User.new(first_name: "Adam", last_name: "Scott")
-    sue = User.new(last_name: "Harrison")
+    adam = User.new(first_name: "Adam", last_name: "Scott", email: "adams@yahoo.com")
+    sue = User.new(last_name: "Harrison", email: "sue@yahoo.com")
 
     assert adam.save
     refute sue.save
   end
 
   def test_user_have_last_name
-    sam = User.new(first_name: "Sam", last_name: "Adams")
-    sue = User.new(first_name: "Sue")
+    sam = User.new(first_name: "Sam", last_name: "Adams", email: "sadams@gmail.com")
+    sue = User.new(first_name: "Sue", email: "sue@yahoo.com")
 
     assert sam.save
+    refute sue.save
+  end
+
+  def test_user_have_email
+    joe = User.new(first_name: "Joe", last_name: "Adams", email: "jadams@gmail.com")
+    sue = User.new(first_name: "Sue", last_name: "Harris")
+
+    assert joe.save
     refute sue.save
   end
 end
