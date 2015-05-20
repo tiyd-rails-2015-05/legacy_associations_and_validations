@@ -10,6 +10,10 @@ class Course < ActiveRecord::Base
   delegate :starts_on, to: :term, prefix: true
   delegate :ends_on, to: :term, prefix: true
 
+  belongs_to :term
+  has_many :course_students, dependent: :restrict_with_error
+  has_many :assignments, dependent: :destroy
+
   def self.example_courses
     self.where(public: true).order("id DESC").first(5)
   end
