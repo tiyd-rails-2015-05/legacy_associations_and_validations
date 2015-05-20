@@ -134,15 +134,15 @@ class ApplicationTest < Minitest::Test
 
   def test_assign_reading_to_lesson
     l = Lesson.create(name: "Validation")
-    book = Reading.create(lesson_id: l.id)
-    other_book = Reading.create(lesson_id: l.id)
+    book = Reading.create(lesson_id: l.id, order_number: 2, url: "http://hyperion.com")
+    other_book = Reading.create(lesson_id: l.id, order_number: 3, url: "http://hanother.com")
     assert_equal 2, l.readings.count
   end
 
   def test_readings_destroyed_with_lesson
     l = Lesson.create(name: "Validation")
-    book = Reading.create(lesson_id: l.id)
-    other_book = Reading.create(lesson_id: l.id)
+    book = Reading.create(lesson_id: l.id, order_number: 2, url: "http://hyperion.com")
+    other_book = Reading.create(lesson_id: l.id, order_number: 3, url: "http://hanother.com")
     assert_equal 1, Lesson.count
     assert_equal 2, Reading.count
     l.destroy!
