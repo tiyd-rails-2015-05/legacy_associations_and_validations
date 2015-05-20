@@ -76,16 +76,16 @@ class ApplicationTest < Minitest::Test
 
   def test_course_has_many_assignments
     science = Course.create(name: "Science", course_code: "SCI304")
-    monday = Assignment.create(course_id: science.id)
-    tuesday = Assignment.create(course_id: science.id)
+    monday = Assignment.create(name: "Essay", course_id: science.id, percent_of_grade: 15)
+    tuesday = Assignment.create(name: "Project", course_id: science.id, percent_of_grade: 15)
 
     assert_equal 2, science.assignments.count
   end
 
   def test_assignments_get_deleted_with_course
     science = Course.create(name: "Science", course_code: "SCI304")
-    monday = Assignment.create(course_id: science.id)
-    tuesday = Assignment.create(course_id: science.id)
+    monday = Assignment.create(name: "Essay", course_id: science.id, percent_of_grade: 15)
+    tuesday = Assignment.create(name: "Project", course_id: science.id, percent_of_grade: 15)
 
     assert_equal 2, Assignment.count
 
@@ -288,6 +288,19 @@ class ApplicationTest < Minitest::Test
     assert_raises(ActiveRecord::RecordInvalid) do
       User.create!(first_name: "Bart", last_name: "Simpson",
       photo_url: "eatmyshorts.com", email: "/bart&eatmyshorts_com")
+    end
+  end
+
+  def test_assignments_must_have_course_id_name_and_percent
+    assert Assignment.create(name: "Essay", course_id: 1, percent_of_grade: 15)
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Assignment.create!(name: "", course_id: 1, percent_of_grade: 15)
+    end
+     assert_raises(ActiveRecord::RecordInvalid) do
+      Assignment.create!(name: "Essay", percent_of_grade: 15)
+    end
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Assignment.create!(name: "Essay", course_id: 1)
     end
   end
 end
