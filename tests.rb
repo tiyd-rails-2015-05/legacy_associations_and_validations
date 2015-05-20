@@ -268,4 +268,15 @@ class ApplicationTest < Minitest::Test
       User.create!(first_name: "Marge", last_name: "Simpson", email: "homer@doh.com")
     end
   end
+
+  def test_user_photo_url_format_must_be_http
+    assert User.create!(first_name: "Homer", last_name: "Simpson",
+      email: "homer@doh.com", photo_url: "http://homer.com")
+    assert User.create!(first_name: "Marge", last_name: "Simpson",
+      email: "marge@bluehair.com", photo_url: "https://marge.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "Bart", last_name: "Simpson",
+      email: "bart@eatmyshorts.com", photo_url: "eatmyshorts.com")
+    end
+  end
 end
