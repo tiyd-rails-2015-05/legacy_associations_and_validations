@@ -39,7 +39,7 @@ class ApplicationTest < Minitest::Test
 
   def test_term_course_association
     spring = Term.create(name: "spring")
-    math = Course.create(name: "calc 2")
-    assert_equal spring, ews.terms.first
+    math = Course.create(name: "calc 2", term_id: spring.id)
+    assert_equal math, spring.courses.first
   end
 end
