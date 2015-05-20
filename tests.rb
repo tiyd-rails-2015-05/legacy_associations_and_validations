@@ -66,19 +66,12 @@ class ApplicationTest < Minitest::Test
     assert_equal math, ews.courses.first
   end
 
-  def test_lessons_readings_association
-    world_war_2 = Lesson.create(name: "World War 2")
-    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
-    assert_equal american_involvement, world_war_2.readings.first
-  end
-
   def test_lessons_must_have_names
     planning = Lesson.new(name: "how to plan stuff")
     free_play = Lesson.new
     assert planning.save
     refute free_play.save
   end
-
 
   def test_readings_destroyed_with_lessons
     world_war_2 = Lesson.create(name: "World War 2")
@@ -88,18 +81,25 @@ class ApplicationTest < Minitest::Test
     assert_equal 0, Lesson.count
   end
 
+  def test_lessons_destroyed_with_courses
+    us_history = Course.create(name: "US History")
+    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
+    assert_equal 1, Course.count
+    us_history.destroy
+    assert_equal 0, Course.count
+  end
+
+
+  def test_lessons_readings_association
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+    assert_equal american_involvement, world_war_2.readings.first
+  end
+
   def test_lessons_associated_courses
     us_history = Course.create(name: "US History")
     world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
     assert_equal 1, us_history.lessons.count
-  end
-
-  def test_lessons_destroyed_with_courses
-    us_history = Course.create(name: "US History")
-    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
-    assert_equal 1, us_history.lessons.count
-    us_history.destroy
-    assert_equal 0, us_history.lessons.count
   end
 
   def test_courses_associated_course_instructors
