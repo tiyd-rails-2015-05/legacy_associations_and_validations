@@ -66,10 +66,18 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_user_have_first_name
-    adam = User.new(first_name: "Adam")
-    sue = User.new({})
+    adam = User.new(first_name: "Adam", last_name: "Scott")
+    sue = User.new(last_name: "Harrison")
 
     assert adam.save
+    refute sue.save
+  end
+
+  def test_user_have_last_name
+    sam = User.new(first_name: "Sam", last_name: "Adams")
+    sue = User.new(first_name: "Sue")
+
+    assert sam.save
     refute sue.save
   end
 end
