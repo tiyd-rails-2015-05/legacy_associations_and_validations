@@ -33,6 +33,30 @@ class ApplicationTest < Minitest::Test
     assert_equal 2, myschool.terms.count
   end
 
+  def test_term_has_many_courses
+    fall = Term.create
+    math = Course.create(name: "Math", term_id: fall.id)
+    science = Course.create(name: "Science", term_id: fall.id)
+
+    assert_equal 2, fall.courses.count
+  end
+
+  def test_term_with_courses_cant_be_deleted
+    fall = Term.create
+    math = Course.create(name: "Math", term_id: fall.id)
+    science = Course.create(name: "Science", term_id: fall.id)
+
+    refute fall.destroy
+  end
+
+  def test_course_with_students_cant_be_deleted
+    science = Course.create(name: "Science")
+    joe = CourseStudent.create(course_id: science.id)
+    anna = CourseStudent.create(course_id: science.id)
+
+    refute science.destroy
+  end
+
   def test_truth
     assert true
   end
