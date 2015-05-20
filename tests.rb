@@ -99,6 +99,12 @@ class ApplicationTest < Minitest::Test
 
   end
 
+  def test_readings_must_order_number_lesson_id_and_url
+    hyperion = Reading.create(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
+
+    assert hyperion
+  end
+
   def test_truth
     assert true
   end

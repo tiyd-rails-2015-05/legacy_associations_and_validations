@@ -5,6 +5,10 @@ class Reading < ActiveRecord::Base
   scope :pre, -> { where("before_lesson = ?", true) }
   scope :post, -> { where("before_lesson != ?", true) }
 
+  validates :order_number, presence: true
+  validates :lesson_id, presence: true
+  validates :url, presence: true
+
   def clone
     dup
   end
