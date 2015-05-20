@@ -25,4 +25,9 @@ class ApplicationTest < Minitest::Test
     assert true
   end
 
+  def test_schools_must_have_name
+    assert School.new(name: "Sanderson High")
+    refute School.new({})
+  end
+
 end
