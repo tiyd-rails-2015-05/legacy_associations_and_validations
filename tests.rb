@@ -33,4 +33,12 @@ class ApplicationTest < Minitest::Test
     refute blank.save
   end
 
+  def test_terms_must_have_name
+    third = Term.new(name: "Third")
+    second = Term.new({})
+
+    assert third.save
+    refute second.save
+  end
+
 end
