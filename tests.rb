@@ -292,7 +292,7 @@ class ApplicationTest < Minitest::Test
     assert_raises(ActiveRecord::RecordInvalid) do
       Assignment.create!(name: "", course_id: 1, percent_of_grade: 15)
     end
-     assert_raises(ActiveRecord::RecordInvalid) do
+    assert_raises(ActiveRecord::RecordInvalid) do
       Assignment.create!(name: "Essay", percent_of_grade: 15)
     end
     assert_raises(ActiveRecord::RecordInvalid) do
