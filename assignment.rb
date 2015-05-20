@@ -5,7 +5,7 @@ class Assignment < ActiveRecord::Base
   delegate :code_and_name, :color, to: :course, prefix: true
 
   belongs_to :course
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :course_id }
   validates :course_id, presence: true
   validates :percent_of_grade, presence: true
 

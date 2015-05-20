@@ -127,7 +127,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_readings_must_order_number_lesson_id_and_url
-    hyperion = Reading.create(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
+    hyperion = Reading.create!(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
 
     assert hyperion
   end
@@ -148,11 +148,7 @@ class ApplicationTest < Minitest::Test
 
   ###Person B
   def test_create_lesson
-    assert Lesson.create(name: "Validation")
-  end
-
-  def test_create_reading
-    assert Reading.create
+    assert Lesson.create!(name: "Validation")
   end
 
   def test_destroy_lesson
@@ -233,8 +229,8 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_terms_must_have_four_paramaters
-    tiy = School.create(name: "The Iron Yard")
-    assert Term.create(name: "Spring", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: tiy.id)
+    tiy = School.create!(name: "The Iron Yard")
+    assert Term.create!(name: "Spring", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: tiy.id)
     assert_raises(ActiveRecord::RecordInvalid) do
       Term.create!(name: "", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: tiy.id)
     end
@@ -250,7 +246,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_users_must_have_names_and_email
-    assert User.create(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
+    assert User.create!(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
     assert_raises(ActiveRecord::RecordInvalid) do
       User.create!(first_name: "", last_name: "Simpson", email: "homer@doh.com")
     end
@@ -263,7 +259,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_user_email_must_be_unique
-    assert User.create(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
+    assert User.create!(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
     assert_raises(ActiveRecord::RecordInvalid) do
       User.create!(first_name: "Marge", last_name: "Simpson", email: "homer@doh.com")
     end
@@ -282,17 +278,17 @@ class ApplicationTest < Minitest::Test
 
   def test_user_email_format_correct
     assert User.create!(first_name: "Homer", last_name: "Simpson",
-      photo_url: "http://homer.com", email: "homer9@doh.com")
+      email: "homer9@doh.com")
     assert User.create!(first_name: "Marge", last_name: "Simpson",
-      photo_url: "https://marge.com", email: "marge_rules@bluehair.com")
+      email: "marge_rules@bluehair.com")
     assert_raises(ActiveRecord::RecordInvalid) do
       User.create!(first_name: "Bart", last_name: "Simpson",
-      photo_url: "eatmyshorts.com", email: "/bart&eatmyshorts_com")
+      email: "/bart&eatmyshorts_com")
     end
   end
 
   def test_assignments_must_have_course_id_name_and_percent
-    assert Assignment.create(name: "Essay", course_id: 1, percent_of_grade: 15)
+    assert Assignment.create!(name: "Essay", course_id: 1, percent_of_grade: 15)
     assert_raises(ActiveRecord::RecordInvalid) do
       Assignment.create!(name: "", course_id: 1, percent_of_grade: 15)
     end
@@ -303,4 +299,13 @@ class ApplicationTest < Minitest::Test
       Assignment.create!(name: "Essay", course_id: 1)
     end
   end
+
+  def test_assignment_names_unique_within_course_id
+    assert Assignment.create!(name: "Essay", course_id: 1, percent_of_grade: 15)
+    assert Assignment.create!(name: "Essay", course_id: 2, percent_of_grade: 15)
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Assignment.create!(name: "Essay", course_id: 1, percent_of_grade: 10)
+    end
+  end
+
 end
