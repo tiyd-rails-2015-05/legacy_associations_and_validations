@@ -34,14 +34,17 @@ class ApplicationTest < Minitest::Test
   #Person A
   def test_school_has_many_terms
     myschool = School.create(name: "The Iron Yard")
-    fall = Term.create(school_id: myschool.id)
-    spring = Term.create(school_id: myschool.id)
+    fall = Term.create(school_id: myschool.id, name: "Fall", starts_on: 2015-05-04,
+    ends_on: 2015-07-24)
+    spring = Term.create(school_id: myschool.id, name: "spring", starts_on: 2015-05-04,
+    ends_on: 2015-07-24)
 
     assert_equal 2, myschool.terms.count
   end
 
   def test_term_has_many_courses
-    fall = Term.create
+    fall = Term.create(school_id: 1, name: "Fall", starts_on: 2015-05-04,
+    ends_on: 2015-07-24)
     math = Course.create(name: "Math", term_id: fall.id)
     science = Course.create(name: "Science", term_id: fall.id)
 
@@ -49,7 +52,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_term_with_courses_cant_be_deleted
-    fall = Term.create
+    fall = Term.create(name: "Fall", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: 1)
     math = Course.create(name: "Math", term_id: fall.id)
     science = Course.create(name: "Science", term_id: fall.id)
 
@@ -94,7 +97,8 @@ class ApplicationTest < Minitest::Test
 
   def test_school_has_many_courses
     myschool = School.create(name: "The Iron Yard")
-    fall = Term.create(school_id: myschool.id)
+    fall = Term.create(school_id: myschool.id, name: "Fall", starts_on: 2015-05-04,
+    ends_on: 2015-07-24)
     math = Course.create(name: "Math", term_id: fall.id)
     science = Course.create(name: "Science", term_id: fall.id)
 
@@ -202,4 +206,20 @@ class ApplicationTest < Minitest::Test
      end
   end
 
+  def test_terms_must_have_four_paramaters
+    tiy = School.create(name: "The Iron Yard")
+    assert Term.create(name: "Spring", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: tiy.id)
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Term.create!(name: "", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: tiy.id)
+    end
+     assert_raises(ActiveRecord::RecordInvalid) do
+      Term.create!(name: "Spring", ends_on: 2015-07-24, school_id: tiy.id)
+    end
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Term.create!(name: "Spring", starts_on: 2015-05-04, school_id: tiy.id)
+    end
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Term.create!(name: "Spring", starts_on: 2015-05-04, ends_on: 2015-07-24)
+    end
+  end
 end
