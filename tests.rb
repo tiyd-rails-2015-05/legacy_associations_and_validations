@@ -96,4 +96,12 @@ class ApplicationTest < Minitest::Test
     assert brad.save
     refute helen.save
   end
+
+  def test_assignment_has_course_id
+    project = Assignment.new(course_id: "Project")
+    weekend_project = Assignment.new({})
+
+    assert project.save
+    refute weekend_project.save
+  end
 end
