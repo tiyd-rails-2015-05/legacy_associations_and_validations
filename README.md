@@ -8,8 +8,8 @@ Take an existing legacy codebase with no associations or validations and add the
 
 After completing this assignment, you should...
 
-* Become more comfortable working with code which you did not write
-* Become more comfortable adding functionality to an existing codebase
+* Be more comfortable working with code which you did not write
+* Be more comfortable adding functionality to an existing codebase
 * Understand how two developers can work on the same codebase
 * Be able to branch your code
 * Be able to handle merge conflicts
