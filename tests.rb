@@ -9,17 +9,20 @@ require './application'
 # Overwrite the development database connection with a test connection.
 ActiveRecord::Base.establish_connection(
   adapter:  'sqlite3',
-  database: 'test.sqlite3'
-)
+  database: 'test.sqlite3')
 
-# Gotta run migrations before we can run tests.  Down will fail the first time,
-# so we wrap it in a begin/rescue.
-begin ApplicationMigration.migrate(:down); rescue; end
-ApplicationMigration.migrate(:up)
-
+ActiveRecord::Migration.verbose = false
 
 # Finally!  Let's test the thing.
 class ApplicationTest < Minitest::Test
+
+  def setup
+    ApplicationMigration.migrate(:up)
+  end
+
+  def teardown
+    ApplicationMigration.migrate(:down)
+  end
 
   def test_truth
     assert true
