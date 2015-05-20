@@ -64,4 +64,12 @@ class ApplicationTest < Minitest::Test
     assert sixth.save
     refute second_time.save
   end
+
+  def test_user_have_first_name
+    adam = User.new(first_name: "Adam")
+    sue = User.new({})
+
+    assert adam.save
+    refute sue.save
+  end
 end
