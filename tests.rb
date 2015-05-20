@@ -200,6 +200,12 @@ class ApplicationTest < Minitest::Test
     end
   end
 
+  def test_format_of_user_email
+    assert_raises ActiveRecord::RecordInvalid do
+      User.create!(first_name: "John", last_name: "Rambo", email: "testmeexample.com")
+    end
+  end
+
   def test_school_term_association
     school = School.new(name: "NCSU")
     term1 = Term.new(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
