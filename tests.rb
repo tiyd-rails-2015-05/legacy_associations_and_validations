@@ -40,20 +40,20 @@ class ApplicationTest < Minitest::Test
 
   def test_term_course_association
     spring = Term.create(name: "spring")
-    math = Course.create(name: "calc 2", term_id: spring.id)
+    math = Course.create(name: "calc 2", term_id: spring.id, course_code: 56)
     assert_equal math, spring.courses.first
     refute spring.destroy
   end
 
   def test_course_course_student_association
-    math = Course.create(name: "calc 2")
+    math = Course.create(name: "calc 2",course_code: 56)
     emily = CourseStudent.create(course_id: math.id)
     assert_equal emily, math.course_students.first
     refute math.destroy
   end
 
   def test_course_assignment_association
-    math = Course.create(name: "calc 2")
+    math = Course.create(name: "calc 2",course_code: 56)
     homework = Assignment.create(course_id: math.id)
     assert_equal homework, math.assignments.first
     assert math.destroy
@@ -68,7 +68,7 @@ class ApplicationTest < Minitest::Test
   def test_school_course_association
     ews = School.create(name: "EWS")
     spring = Term.create(name: "spring", school_id: ews.id)
-    math = Course.create(name: "calc 2", term_id: spring.id)
+    math = Course.create(name: "calc 2", term_id: spring.id,course_code: 56)
     assert_equal math, ews.courses.first
   end
 
@@ -106,4 +106,13 @@ class ApplicationTest < Minitest::Test
     refute clockwork_orange.save
     assert lord_of_the_rings.save
   end
+
+  def test_courses_must_have_attributes
+    math= Course.new(course_code: 56, name: "calc2")
+    blank = Course.new
+    assert math.save
+    refute blank.save
+  end
+
+
 end
