@@ -28,4 +28,19 @@ class ApplicationTest < Minitest::Test
     assert true
   end
 
+  def test_create_lesson
+    assert lesson = Lesson.create(name: "Lesson One")
+  end
+
+  def test_create_reading
+    assert reading = Reading.create(caption:"Reading One", url:"google.com")
+  end
+
+  def test_lesson_has_many_readings
+    lesson_one = Lesson.create(name: "Lesson One")
+    reading_one = Reading.create(caption:"Reading One", url:"google.com")
+    reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
+    assert_equal 
+  end
+
 end
