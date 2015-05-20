@@ -1,5 +1,6 @@
 class Lesson < ActiveRecord::Base
 
+
   delegate :code_and_name, to: :course, prefix: true
 
   scope :roots, -> { where("parent_lesson_id IS NULL") }
@@ -8,6 +9,7 @@ class Lesson < ActiveRecord::Base
 
   # after_save :update_cached_values
   has_many :readings, dependent: :destroy
+  has_many :pre_class_assignments
   belongs_to :lessons
   validates :name, presence: true
 

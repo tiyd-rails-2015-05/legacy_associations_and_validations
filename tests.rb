@@ -45,16 +45,16 @@ class ApplicationTest < Minitest::Test
   def test_term_has_many_courses
     fall = Term.create(school_id: 1, name: "Fall", starts_on: 2015-05-04,
     ends_on: 2015-07-24)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create!(name: "Math", term_id: fall.id, course_code: "SCI402")
+    science = Course.create!(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     assert_equal 2, fall.courses.count
   end
 
   def test_term_with_courses_cant_be_deleted
     fall = Term.create(name: "Fall", starts_on: 2015-05-04, ends_on: 2015-07-24, school_id: 1)
-    math = Course.create(name: "Math", term_id: fall.id)
-    science = Course.create(name: "Science", term_id: fall.id)
+    math = Course.create(name: "Math", term_id: fall.id, course_code: "SCI402")
+    science = Course.create(name: "Science", term_id: fall.id, course_code: "SCI402")
 
     refute fall.destroy
   end
@@ -111,6 +111,14 @@ class ApplicationTest < Minitest::Test
     end
   end
 
+  def test_lessons_have_pre_class_assignments
+    equations = Lesson.create(name: "Equations")
+    worksheet = Assignment.create(name: "Worksheet")
+    Lesson.linked_to_assignment(worksheet)
+
+    assert_equal 1, equations.pre_class_assignments.count
+  end
+
   def test_courses_must_be_unique
     fall = Term.create(school_id: 1)
     spring = Term.create(school_id: 1)
@@ -127,7 +135,7 @@ class ApplicationTest < Minitest::Test
 
   end
 
-  def test_readings_must_order_number_lesson_id_and_url
+  def test_readings_must_have_order_number_lesson_id_and_url
     hyperion = Reading.create(order_number: 2, lesson_id: 1, url: "http://hyperion.com")
 
     assert hyperion
