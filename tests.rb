@@ -143,4 +143,11 @@ class ApplicationTest < Minitest::Test
     assert_equal 0, Lesson.count
     assert_equal 0, Reading.count
   end
+
+  def test_assign_lesson_to_course
+    rails = Course.create(name: "Rails")
+    validation = Lesson.create(name: "Validation", course_id: rails.id)
+    git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
+    assert_equal 2, rails.lessons.count
+  end
 end

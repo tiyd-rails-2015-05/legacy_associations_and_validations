@@ -1,5 +1,4 @@
 class Lesson < ActiveRecord::Base
-  has_many :readings, dependent: :destroy
 
   delegate :code_and_name, to: :course, prefix: true
 
@@ -8,7 +7,8 @@ class Lesson < ActiveRecord::Base
   scope :without_night_assignments, -> { where("night_assignment_id IS NULL") }
 
   # after_save :update_cached_values
-
+  has_many :readings, dependent: :destroy
+  belongs_to :lessons
   validates :name, presence: true
 
 
