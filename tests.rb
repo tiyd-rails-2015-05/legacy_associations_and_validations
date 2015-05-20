@@ -248,4 +248,17 @@ class ApplicationTest < Minitest::Test
       Term.create!(name: "Spring", starts_on: 2015-05-04, ends_on: 2015-07-24)
     end
   end
+
+  def test_users_must_have_names_and_email
+    assert User.create(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "", last_name: "Simpson", email: "homer@doh.com")
+    end
+     assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "Homer", last_name: "", email: "homer@doh.com")
+    end
+    assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "Homer", last_name: "Simpson", email: "")
+    end
+  end
 end
