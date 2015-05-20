@@ -25,10 +25,8 @@ class ApplicationTest < Minitest::Test
 
   def test_school_has_many_terms
     myschool = School.create
-    fall = Term.create
-    spring = Term.create
-    spring.update(school_id: myschool.id)
-    fall.update(school_id: myschool.id)
+    fall = Term.create(school_id: myschool.id)
+    spring = Term.create(school_id: myschool.id)
 
     assert_equal 2, myschool.terms.count
   end
@@ -49,12 +47,56 @@ class ApplicationTest < Minitest::Test
     refute fall.destroy
   end
 
+  def test_course_has_many_students
+    science = Course.create(name: "Science")
+    joe = CourseStudent.create(course_id: science.id)
+    anna = CourseStudent.create(course_id: science.id)
+
+    assert_equal 2, science.course_students.count
+  end
+
   def test_course_with_students_cant_be_deleted
     science = Course.create(name: "Science")
     joe = CourseStudent.create(course_id: science.id)
     anna = CourseStudent.create(course_id: science.id)
 
     refute science.destroy
+  end
+
+  def test_course_has_many_assignments
+    science = Course.create(name: "Science")
+    monday = Assignment.create(course_id: science.id)
+    tuesday = Assignment.create(course_id: science.id)
+
+    assert_equal 2, science.assignments.count
+  end
+
+  def test_assignments_get_deleted_with_course
+    science = Course.create(name: "Science")
+    monday = Assignment.create(course_id: science.id)
+    tuesday = Assignment.create(course_id: science.id)
+
+    assert_equal 2, Assignment.count
+
+    science.destroy
+
+    assert_equal 0, Assignment.count
+  end
+
+  def test_school_has_many_courses
+    myschool = School.create
+    fall = Term.create(school_id: myschool.id)
+    math = Course.create(name: "Math", term_id: fall.id)
+    science = Course.create(name: "Science", term_id: fall.id)
+
+    assert_equal 2, myschool.courses.count
+  end
+
+  def test_lessons_must_have_names
+    assert_raises(ActiveRecord::RecordInvalid) do
+      Lesson.create!(name: "")
+    end
+
   end
 
   def test_truth
