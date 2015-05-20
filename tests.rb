@@ -33,7 +33,7 @@ class ApplicationTest < Minitest::Test
 
   #Person A
   def test_school_has_many_terms
-    myschool = School.create
+    myschool = School.create(name: "The Iron Yard")
     fall = Term.create(school_id: myschool.id)
     spring = Term.create(school_id: myschool.id)
 
@@ -93,7 +93,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_school_has_many_courses
-    myschool = School.create
+    myschool = School.create(name: "The Iron Yard")
     fall = Term.create(school_id: myschool.id)
     math = Course.create(name: "Math", term_id: fall.id)
     science = Course.create(name: "Science", term_id: fall.id)
@@ -193,6 +193,13 @@ class ApplicationTest < Minitest::Test
     other_book = Reading.create(lesson_id: rails.id, order_number: 3, url: "http://hanother.com")
 
     assert_equal [book, other_book], rails.readings
+  end
+
+  def test_schools_must_have_names
+    assert School.create!(name: "The Iron Yard")
+    assert_raises(ActiveRecord::RecordInvalid) do
+       School.create!(name: "")
+     end
   end
 
 end
