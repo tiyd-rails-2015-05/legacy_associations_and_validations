@@ -72,8 +72,6 @@ class ApplicationTest < Minitest::Test
     assert_equal math, ews.courses.first
   end
 
-
-
   def test_lessons_readings_association
     world_war_2 = Lesson.create(name: "World War 2")
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
