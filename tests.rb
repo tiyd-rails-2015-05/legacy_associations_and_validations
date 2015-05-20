@@ -78,6 +78,14 @@ class ApplicationTest < Minitest::Test
     assert_equal american_involvement, world_war_2.readings.first
   end
 
+  def test_lessons_must_have_names
+    planning = Lesson.new(name: "how to plan stuff")
+    free_play = Lesson.new
+    assert planning.save
+    refute free_play.save
+  end
+
+
   def test_readings_destroyed_with_lessons
     world_war_2 = Lesson.create(name: "World War 2")
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
@@ -92,7 +100,6 @@ class ApplicationTest < Minitest::Test
 
 
   end
-
 
 
 end
