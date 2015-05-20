@@ -1,7 +1,7 @@
 class Course < ActiveRecord::Base
   belongs_to :term
   has_many :course_students, dependent: :restrict_with_error
-  has_many :lessons
+  has_many :lessons, dependent: :destroy
 
   default_scope { order("courses.term_id DESC, courses.course_code, courses.id DESC") }
 

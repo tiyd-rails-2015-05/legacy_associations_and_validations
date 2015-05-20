@@ -60,10 +60,12 @@ class ApplicationTest < Minitest::Test
     reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
     lesson_one.add_reading(reading_one)
     lesson_one.add_reading(reading_two)
-    reading_one.save
-    reading_two.save
-    assert lesson_one.destroy
 
+    assert reading_one.save
+    assert reading_two.save
+    assert_equal 1, Lesson.count
+    assert_equal 2, Reading.count
+    assert lesson_one.destroy
     assert_equal 0, Lesson.count
     assert_equal 0, Reading.count
   end
@@ -79,6 +81,23 @@ class ApplicationTest < Minitest::Test
 
     assert math.add_lesson(lesson_one)
     assert math.add_lesson(lesson_two)
+  end
+
+  def test_destroying_course_destroys_lessons
+    math = Course.create(name: "math")
+    lesson_one = Lesson.create(name: "Lesson One")
+    lesson_two = Lesson.create(name: "Lesson Two")
+    math.add_lesson(lesson_one)
+    math.add_lesson(lesson_two)
+
+    assert lesson_one.save
+    assert lesson_two.save
+    assert_equal 1, Course.count
+    assert_equal 2, Lesson.count
+    assert math.destroy
+    assert_equal 0, Course.count
+    assert_equal 0, Lesson.count
+
   end
 
   def test_school_term_association
