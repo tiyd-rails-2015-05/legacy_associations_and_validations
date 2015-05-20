@@ -34,26 +34,34 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_terms_must_have_name
-    third = Term.new(name: "Third", starts_on: 2015-01-05, ends_on: 2015-03-30)
-    second = Term.new({starts_on: 2014-11-01, ends_on: 2015-01-01})
+    third = Term.new(name: "Third", starts_on: 2015-01-05, ends_on: 2015-03-30, school_id: 3)
+    second = Term.new(starts_on: 2014-11-01, ends_on: 2015-01-01, school_id: 4)
 
     assert third.save
     refute second.save
   end
 
   def test_terms_have_starts_on
-    fourth = Term.new(name: "Fourth", starts_on: 2015-04-05, ends_on: 2015-07-01 )
-    second = Term.new(name: "Second", ends_on: 2015-01-01)
+    fourth = Term.new(name: "Fourth", starts_on: 2015-04-05, ends_on: 2015-07-01, school_id: 1 )
+    second = Term.new(name: "Second", ends_on: 2015-01-01, school_id: 2)
 
     assert fourth.save
     refute second.save
   end
 
   def test_terms_have_ends_on
-    fifth = Term.new(name: "Fifth", starts_on: 2015-04-05, ends_on: 2015-07-01)
-    second = Term.new(name: "Second", starts_on: 2014-10-11)
+    fifth = Term.new(name: "Fifth", starts_on: 2015-04-05, ends_on: 2015-07-01, school_id: 1)
+    second = Term.new(name: "Second", starts_on: 2014-10-11, school_id: 2)
 
     assert fifth.save
     refute second.save
+  end
+
+  def test_terms_have_school_id
+    sixth = Term.new(name: "sixth", starts_on: 2015-04-05, ends_on: 2015-07-01, school_id: 1)
+    second_time = Term.new(name: "Second", starts_on: 2014-10-11, ends_on: 2015-01-02)
+
+    assert sixth.save
+    refute second_time.save
   end
 end
