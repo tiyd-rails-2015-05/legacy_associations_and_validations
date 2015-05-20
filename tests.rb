@@ -123,7 +123,6 @@ class ApplicationTest < Minitest::Test
     refute bob.save
   end
 
-
   def test_assignment_has_course_id
     project = Assignment.new(course_id: 2, name: "Project", percent_of_grade: 0.76)
     weekend_project = Assignment.new(name: "Weekend Project", percent_of_grade: 0.96)
@@ -146,5 +145,15 @@ class ApplicationTest < Minitest::Test
 
     assert project2.save
     refute weekend_project2.save
+  end
+
+  def test_assignment_name_unique_to_course_id
+    me = Assignment.new(course_id: 1, name: "Me", percent_of_grade: 0.90)
+    myself = Assignment.new(course_id: 2, name: "Me", percent_of_grade: 0.75)
+    you = Assignment.new(course_id: 1, name: "Me", percent_of_grade: 0.88)
+
+    assert me.save
+    assert myself.save
+    refute you.save
   end
 end
