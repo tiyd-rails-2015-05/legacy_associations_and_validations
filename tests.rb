@@ -279,4 +279,15 @@ class ApplicationTest < Minitest::Test
       email: "bart@eatmyshorts.com", photo_url: "eatmyshorts.com")
     end
   end
+
+  def test_user_email_format_correct
+    assert User.create!(first_name: "Homer", last_name: "Simpson",
+      photo_url: "http://homer.com", email: "homer9@doh.com")
+    assert User.create!(first_name: "Marge", last_name: "Simpson",
+      photo_url: "https://marge.com", email: "marge_rules@bluehair.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "Bart", last_name: "Simpson",
+      photo_url: "eatmyshorts.com", email: "/bart&eatmyshorts_com")
+    end
+  end
 end
