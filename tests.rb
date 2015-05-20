@@ -58,10 +58,11 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_readings_destroyed_with_lessons
-    world_war_2 = Lesson.new(name: "World War 2")
-    american_involvement = Reading.new(caption: "American Involvement", lesson_id: world_war_2.id)
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+    assert_equal 1, Lesson.count
     world_war_2.destroy
-    refute american_involvement.reload
+    assert_equal 0, Lesson.count
   end
 
 
