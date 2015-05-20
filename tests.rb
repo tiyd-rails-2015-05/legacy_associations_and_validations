@@ -144,15 +144,36 @@ class ApplicationTest < Minitest::Test
   def test_school_has_name
     assert School.create(name: "NC State")
     assert_raises ActiveRecord::RecordInvalid do
-    School.create!(name: "")
+      School.create!(name: "")
+    end
   end
-  
+
+  def test_term_has_name
+    assert Term.create(name: "Summer")
+    assert_raises ActiveRecord::RecordInvalid do
+      Term.create!(name: "")
+    end
+  end
+
+  def test_term_has_starts_on
+    assert Term.create(name: "Summer", starts_on: "06/05/15")
+    assert_raises ActiveRecord::RecordInvalid do
+      Term.create!(name:"Summer", starts_on: "")
+    end
+  end
+
+  def test_term_has_end_on
+    assert true
+  end
+
+  def test_term_has_school_id
+    assert true
   end
 
   def test_school_term_association
     school = School.new(name: "NCSU")
-    term1 = Term.new(name: "Fall")
-    term2 = Term.new(name: "Spring")
+    term1 = Term.new(name: "Fall", starts_on: "06/05/15")
+    term2 = Term.new(name: "Spring", starts_on: "06/05/15")
 
     school.assign_term(term1)
 
@@ -164,7 +185,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_term_course_association
-    fall_term = Term.create(name: "Fall")
+    fall_term = Term.create(name: "Fall", starts_on: "06/05/15")
     aero = Course.new(name: "Intro to Aero")
 
     fall_term.assign_course(aero)
@@ -173,7 +194,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_term_with_courses_cant_be_deleted
-    fall_term = Term.create(name: "Fall")
+    fall_term = Term.create(name: "Fall", starts_on: "06/05/15")
     aero = Course.new(name: "Intro to Aero")
 
     fall_term.assign_course(aero)
