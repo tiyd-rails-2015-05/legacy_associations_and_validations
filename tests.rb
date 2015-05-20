@@ -44,10 +44,32 @@ class ApplicationTest < Minitest::Test
     refute spring.destroy
   end
 
-  def test_term_course_association
+  def test_course_course_student_association
     math = Course.create(name: "calc 2")
     emily = CourseStudent.create(course_id: math.id)
     assert_equal emily, math.course_students.first
     refute math.destroy
   end
+
+  def test_course_assignment_association
+    math = Course.create(name: "calc 2")
+    homework = Assignment.create(course_id: math.id)
+    assert_equal homework, math.assignments.first
+    assert math.destroy
+  end
+
+  # def test_lesson_pre_work_association
+  #   homework = Assignment.create(name: "homework")
+  #   planning = Lesson.create(pre_class_assignment_id: homework.id)
+  #   assert_equal homework, planning.pre_class_assignment
+  # end
+
+  def test_school_course_association
+    ews = School.create(name: "EWS")
+    spring = Term.create(name: "spring", school_id: ews.id)
+    math = Course.create(name: "calc 2", term_id: spring.id)
+    assert_equal math, ews.courses.first
+  end
+
+  
 end
