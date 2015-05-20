@@ -1,4 +1,5 @@
 class Lesson < ActiveRecord::Base
+  has_many :readings
   delegate :code_and_name, to: :course, prefix: true
 
   scope :roots, -> { where("parent_lesson_id IS NULL") }
@@ -10,6 +11,10 @@ class Lesson < ActiveRecord::Base
   def self.linked_to_assignment(assignment)
     found_lesson = where(pre_class_assignment_id: assignment.id).first
     found_lesson ||= where(in_class_assignment_id: assignment.id).first
+  end
+
+  def add_reading(reading)
+    readings << reading
   end
 
   def update_cached_values
