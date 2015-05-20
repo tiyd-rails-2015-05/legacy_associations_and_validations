@@ -110,6 +110,16 @@ class ApplicationTest < Minitest::Test
     assert math.add_instructor(prof)
   end
 
+  def test_course_is_not_destroyes_if_has_instructor
+    prof = CourseInstructor.create
+    math = Course.create
+    math.add_instructor(prof)
+
+    assert prof.save
+    refute math.destroy
+
+  end
+
   def test_school_term_association
     school = School.new(name: "NCSU")
     term1 = Term.new(name: "Fall")
