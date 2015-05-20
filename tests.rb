@@ -97,7 +97,17 @@ class ApplicationTest < Minitest::Test
     assert math.destroy
     assert_equal 0, Course.count
     assert_equal 0, Lesson.count
+  end
 
+  def test_create_course_instructor
+    prof = CourseInstructor.create
+  end
+
+  def test_add_course_to_course_instructor
+    prof = CourseInstructor.create
+    math = Course.create
+
+    assert math.add_instructor(prof)
   end
 
   def test_school_term_association
