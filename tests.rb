@@ -50,5 +50,10 @@ class ApplicationTest < Minitest::Test
     assert_equal emily, math.course_students.first
     refute math.destroy
   end
-  
+
+  def test_lessons_readings_association
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+  end
+
 end
