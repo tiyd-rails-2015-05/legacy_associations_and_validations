@@ -97,6 +97,21 @@ class ApplicationTest < Minitest::Test
     refute helen.save
   end
 
+  def test_user_has_useable_email
+    trent = User.new(first_name: "Trent", last_name: "Adams", email: "adams@gmail.com")
+    sue = User.new(first_name: "Sue", last_name: "James", email: "sue@yahoo3.com")
+    kate = User.new(first_name: "Kate", last_name: "Harris", email: "kate.gmail.com")
+    erica = User.new(first_name: "Erica", last_name: "Jackson", email: "ejackson4@yahoocom")
+    cash = User.new(first_name: "Cash", last_name: "Price", email: "cash@yahoo3.co")
+
+
+    assert trent.save
+    assert sue.save
+    refute kate.save
+    refute erica.save
+    refute cash.save
+  end
+
   def test_assignment_has_course_id
     project = Assignment.new(course_id: 2, name: "Project", percent_of_grade: 0.76)
     weekend_project = Assignment.new(name: "Weekend Project", percent_of_grade: 0.96)
