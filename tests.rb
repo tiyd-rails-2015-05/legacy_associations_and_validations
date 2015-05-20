@@ -137,6 +137,7 @@ class ApplicationTest < Minitest::Test
     book = Reading.create(lesson_id: l.id, order_number: 2, url: "http://hyperion.com")
     other_book = Reading.create(lesson_id: l.id, order_number: 3, url: "http://hanother.com")
     assert_equal 2, l.readings.count
+    assert_equal [book, other_book], l.readings
   end
 
   def test_readings_destroyed_with_lesson
@@ -170,8 +171,9 @@ class ApplicationTest < Minitest::Test
   def test_courses_associated_with_course_instructors
     rails = Course.create(name: "Rails")
     mason = CourseInstructor.create(course_id: rails.id)
-    assert 1, rails.course_instructors.count
-    assert rails.id, mason.course_id
+    assert_equal 1, rails.course_instructors.count
+    assert_equal [mason], rails.course_instructors
+    assert_equal rails.id, mason.course_id
   end
 
   def test_courses_with_instructors_cant_be_destroyed
@@ -181,4 +183,16 @@ class ApplicationTest < Minitest::Test
       rails.destroy!
     end
   end
+
+  #in-class assignment stuff here
+
+  def test_courses_have_many_readings_through_lessons
+    rails = Course.create(name: "Rails")
+    validation = Lesson.create(name: "Validation", course_id: rails.id)
+    book = Reading.create(lesson_id: rails.id, order_number: 2, url: "http://hyperion.com")
+    other_book = Reading.create(lesson_id: rails.id, order_number: 3, url: "http://hanother.com")
+
+    assert_equal [book, other_book], rails.readings
+  end
+
 end
