@@ -158,6 +158,15 @@ class ApplicationTest < Minitest::Test
     end
   end
 
+  def test_assignments_have_many_graded_assignments
+    equations = Assignment.create!(name: "worksheet", due_at: DateTime.new(2015, 2, 9), active_at: DateTime.new(2015, 2, 5), course_id: 1, percent_of_grade: 15)
+    joe = AssignmentGrade.create(assignment_id: equations.id)
+    anna = AssignmentGrade.create(assignment_id: equations.id)
+
+    assert joe
+    assert anna
+  end
+
   def test_truth
     assert true
   end
