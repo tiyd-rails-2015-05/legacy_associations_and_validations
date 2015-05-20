@@ -68,7 +68,7 @@ class ApplicationTest < Minitest::Test
 
   def test_lessons_readings_association
     world_war_2 = Lesson.create(name: "World War 2")
-    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id,order_number: 4,  url: "http://www.thebest.com")
     assert_equal american_involvement, world_war_2.readings.first
   end
 
@@ -89,13 +89,13 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_lessons_associated_courses
-    us_history = Course.create(name: "US History")
+    us_history = Course.create(name: "US History",course_code: 2451)
     world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
     assert_equal 1, us_history.lessons.count
   end
 
   def test_lessons_destroyed_with_courses
-    us_history = Course.create(name: "US History")
+    us_history = Course.create(name: "US History",course_code: 2451)
     world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
     assert_equal 1, us_history.lessons.count
     us_history.destroy
@@ -103,13 +103,13 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_courses_associated_course_instructors
-    us_history = Course.create(name: "US History")
+    us_history = Course.create(name: "US History",course_code: 2451)
     mr_turner = CourseInstructor.create(course_id: us_history.id)
     assert_equal mr_turner, us_history.course_instructors.first
   end
 
   def test_courses_with_students_no_delete
-    us_history = Course.create(name: "US History")
+    us_history = Course.create(name: "US History",course_code: 2451)
     mr_turner = CourseInstructor.create(course_id: us_history.id)
     assert_equal 1, Course.count
     us_history.explode
