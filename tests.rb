@@ -28,4 +28,8 @@ class ApplicationTest < Minitest::Test
     assert true
   end
 
+  def test_school_term_association
+    
+  end
+
 end
