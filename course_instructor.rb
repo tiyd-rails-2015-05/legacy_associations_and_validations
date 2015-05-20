@@ -1,3 +1,3 @@
 class CourseInstructor < ActiveRecord::Base
-  has_many :course_instructors
+  has_many :courses
 end

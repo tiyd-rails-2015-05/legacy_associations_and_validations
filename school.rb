@@ -1,5 +1,5 @@
 class School < ActiveRecord::Base
-  validates
+  validates :name, presence: true
 
   default_scope { order('name') }
 end

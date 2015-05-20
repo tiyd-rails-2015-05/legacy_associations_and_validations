@@ -1,6 +1,6 @@
 class Lesson < ActiveRecord::Base
-  has_many :readings dependent :destroy
-  has_many  :in_class_assignments dependent :destroy
+  has_many :readings, dependent: :destroy
+  belongs_to :in_class_assignments, class_name: "Assignment", foreign_key: "in_class_assignment_id", dependent: :destroy
   belongs_to :courses
 
   delegate :code_and_name, to: :course, prefix: true
