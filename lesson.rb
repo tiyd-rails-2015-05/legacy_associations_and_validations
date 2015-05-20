@@ -1,4 +1,8 @@
 class Lesson < ActiveRecord::Base
+  has_many :readings
+  belongs_to :pre_class_assignment_id, class_name:"Lesson", foreign_key: "pre_class_assignment_id"
+
+
   delegate :code_and_name, to: :course, prefix: true
 
   scope :roots, -> { where("parent_lesson_id IS NULL") }
