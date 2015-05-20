@@ -88,4 +88,12 @@ class ApplicationTest < Minitest::Test
     assert joe.save
     refute sue.save
   end
+
+  def test_user_have_unique_email
+    brad = User.new(first_name: "Brad", last_name: "Adams", email: "badams@gmail.com")
+    helen = User.new(first_name: "Helen", last_name: "Harris", email: "badams@gmail.com")
+
+    assert brad.save
+    refute helen.save
+  end
 end
