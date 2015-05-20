@@ -261,4 +261,11 @@ class ApplicationTest < Minitest::Test
       User.create!(first_name: "Homer", last_name: "Simpson", email: "")
     end
   end
+
+  def test_user_email_must_be_unique
+    assert User.create(first_name: "Homer", last_name: "Simpson", email: "homer@doh.com")
+    assert_raises(ActiveRecord::RecordInvalid) do
+      User.create!(first_name: "Marge", last_name: "Simpson", email: "homer@doh.com")
+    end
+  end
 end
