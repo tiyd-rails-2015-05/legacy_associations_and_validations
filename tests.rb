@@ -123,13 +123,21 @@ class ApplicationTest < Minitest::Test
   def test_validate_that_terms_must_have_name_starts_on_ends_on_and_school_id
     # Validate that Terms must have name, starts_on, ends_on, and school_id.
     school = School.create(name: "TIYD")
-    term1 = Term.new(na)
+    term1 = Term.new
     term2 = Term.new(name: "string",
-        starts_on: 2013-04-12 ((2456395j,0s,0n),+0s,2299161j),
-        ends_on: 2015-05-21 ((2457164j,0s,0n),+0s,2299161j),
+        starts_on: 2013-04-12,
+        ends_on: 2015-05-21,
         school_id: school.id
     )
+    refute term1.save
+    assert term2.save
+  end
 
-
+  def test_validate_that_the_user_has_a_first_name_a_last_name_and_an_email
+    # Validate that the User has a first_name, a last_name, and an email.
+    user1 = User.new
+    user2 = User.new(first_name: "Big", last_name: "Bad", email: "Bob")
+    refute user1.save
+    assert user2.save
   end
 end
