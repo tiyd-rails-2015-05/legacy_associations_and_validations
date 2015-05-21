@@ -222,16 +222,23 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_has_percent_of_grade
-    assert Assignment.create(name: "Homework",percent_of_grade: 20, course_id: 1)
+    assert Assignment.create(name: "Homework", percent_of_grade: 20, course_id: 1)
     assert_raises ActiveRecord::RecordInvalid do
       Assignment.create!(name: "Homework", percent_of_grade: nil, course_id: 1)
     end
   end
 
   def test_assignment_has_course_id
-    assert Assignment.create!(name: "Homework",percent_of_grade: 20, course_id: 1)
+    assert Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: 1)
     assert_raises ActiveRecord::RecordInvalid do
       Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: "")
+    end
+  end
+
+  def test_assigment_name_unique_if_same_course_id
+    assert Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: 1)
+    assert_raises ActiveRecord::RecordInvalid do
+      assert Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: 1)
     end
   end
 

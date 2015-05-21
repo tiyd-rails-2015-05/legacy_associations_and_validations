@@ -1,6 +1,6 @@
 class Assignment < ActiveRecord::Base
 
-  validates :name, presence: true
+  validates :name, presence: true, uniqueness: { scope: :course_id}
   validates :percent_of_grade, presence: true
   validates :course_id, presence: true
 
