@@ -201,8 +201,16 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_format_of_user_email
+    assert User.create(first_name: "John", last_name: "Rambo", email: "test@example.com")
     assert_raises ActiveRecord::RecordInvalid do
       User.create!(first_name: "John", last_name: "Rambo", email: "testmeexample.com")
+    end
+  end
+
+  def test_photo_url_uses_http
+    assert User.create!(first_name: "John", last_name: "Rambo", email: "testme@example.com", photo_url: "http://www.ign.com")
+    assert_raises ActiveRecord::RecordInvalid do
+      User.create!(first_name: "John", last_name: "Rambo", email: "testme@example.com", photo_url: "www.yahoo.com")
     end
   end
 
