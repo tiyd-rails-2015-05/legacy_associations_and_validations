@@ -38,7 +38,7 @@ class ApplicationTest < Minitest::Test
 
   def test_add_reading_to_lesson
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(caption:"Reading One", url:"google.com")
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
 
     assert lesson_one.add_reading(reading_one)
     assert_equal lesson_one.id, Reading.last.lesson_id
@@ -46,8 +46,8 @@ class ApplicationTest < Minitest::Test
 
   def test_lesson_has_many_readings
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(caption:"Reading One", url:"google.com")
-    reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
+    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"ign.com", lesson_id: 1)
     lesson_one.add_reading(reading_one)
     lesson_one.add_reading(reading_two)
 
@@ -56,8 +56,8 @@ class ApplicationTest < Minitest::Test
 
   def test_destroy_lesson_with_reading
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(caption:"Reading One", url:"google.com")
-    reading_two = Reading.create(caption:"Reading Two", url:"ign.com")
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
+    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"ign.com", lesson_id: 1)
     lesson_one.add_reading(reading_one)
     lesson_one.add_reading(reading_two)
 
@@ -84,7 +84,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_destroying_course_destroys_lessons
-    math = Course.create(name: "math")
+    math = Course.create(name: "math", course_code: "123")
     lesson_one = Lesson.create(name: "Lesson One")
     lesson_two = Lesson.create(name: "Lesson Two")
     math.add_lesson(lesson_one)
@@ -222,7 +222,7 @@ class ApplicationTest < Minitest::Test
 
   def test_term_course_association
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
-    aero = Course.new(name: "Intro to Aero")
+    aero = Course.new(name: "Intro to Aero", course_code: "123")
 
     fall_term.add_course(aero)
 
@@ -231,7 +231,7 @@ class ApplicationTest < Minitest::Test
 
   def test_term_with_courses_cant_be_deleted
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
-    aero = Course.new(name: "Intro to Aero")
+    aero = Course.new(name: "Intro to Aero", course_code: "123")
 
     fall_term.add_course(aero)
 
@@ -239,7 +239,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_student_association
-    aero = Course.create(name: "Intro to Aero")
+    aero = Course.create(name: "Intro to Aero", course_code: "123")
     john = CourseStudent.new(student_id: 1)
 
     aero.add_student(john)
@@ -248,7 +248,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_courses_association
-    aero = Course.create(name: "Intro to Aero")
+    aero = Course.create(name: "Intro to Aero", course_code: "123")
     cruise_altitude = Assignment.new(name: "Cruise Altitude")
 
     aero.add_assignment(cruise_altitude)
@@ -290,5 +290,41 @@ class ApplicationTest < Minitest::Test
 
     assert ncsu.courses.count
   end
+
+  def test_lesson_has_name
+    assert Lesson.create(name: "Lesson One")
+    assert_raises ActiveRecord::RecordInvalid do
+      Lesson.create!(name: "")
+    end
+  end
+
+def test_reading_has_order_number
+  assert Reading.create(order_number: 1, lesson_id: 1, url: "google.com")
+  assert_raises ActiveRecord::RecordInvalid do
+    Reading.create!(order_number: nil)
+  end
+end
+
+def test_reading_has_lesson_id
+  assert Reading.create(order_number: 1, lesson_id: 1, url: "google.com")
+    assert_raises ActiveRecord::RecordInvalid do
+    Reading.create!(order_number: nil, lesson_id: nil)
+  end
+end
+
+def test_reading_has_url
+  assert Reading.create(order_number: 1, lesson_id: 1, url: "google.com")
+  assert_raises ActiveRecord::RecordInvalid do
+    Reading.create!(order_number: 1, lesson_id: 1, url: "")
+  end
+end
+
+def test_courses_have_course_code
+  assert Course.create(name: "Psych", course_code: "123")
+  assert_raises ActiveRecord::RecordInvalid do
+    Course.create!(course_code: "")
+  end
+end
+
 
 end
