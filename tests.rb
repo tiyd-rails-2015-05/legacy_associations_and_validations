@@ -55,7 +55,7 @@ class ApplicationTest < Minitest::Test
 
   def test_course_assignment_association
     math = Course.create(name: "calc 2",course_code: 56)
-    homework = Assignment.create(course_id: math.id)
+    homework = Assignment.create(course_id: math.id, name: "homework", percent_of_grade: 50)
     assert_equal homework, math.assignments.first
     assert math.destroy
   end
@@ -190,4 +190,17 @@ class ApplicationTest < Minitest::Test
     refute scott.save
     assert turner.save
   end
+
+  def test_photo_url_validation
+    scott = User.create(first_name: "Scott", last_name: "Williams", email: "blah@blah.com")
+    scott.photo_url = "blah"
+    refute scott.save
+  end
+
+  def test_validates_assign_attributes
+    homework = Assignment.create(name: "homework", course_id: 3344)
+    refute homework.save
+  end
+
+  #course_id, name, and percent_of_grade
 end
