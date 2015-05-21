@@ -2,13 +2,11 @@ class Course < ActiveRecord::Base
   has_many :lessons, dependent: :destroy
   has_many :readings, through: :lessons
   has_many :course_instructors
-
-  belongs_to :terms
   has_many :course_students, dependent: :restrict_with_error
   has_many :assignments, dependent: :destroy
+  belongs_to :terms
 
-  validates :course_code, presence: true
-  validates :course_code, uniqueness: true
+  validates :course_code, presence: true, uniqueness: true
   validates :name, presence: true
 
 
