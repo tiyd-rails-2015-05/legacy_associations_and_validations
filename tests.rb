@@ -157,6 +157,13 @@ class ApplicationTest < Minitest::Test
     assert user1.save
     assert user2.save
     refute user3.save
+  end
+
+  def test_validate_that_assignments_have_a_course_id_name_and_percent_of_grade
+    assignment1 = Assignment.new
+    assignment2 = Assignment.new(course_id: 1, name: "string", percent_of_grade: 11.11)
+    refute assignment1.save
+    assert assignment2.save
 
   end
 end
