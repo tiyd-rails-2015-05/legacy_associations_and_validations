@@ -201,7 +201,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_format_of_user_email
-    assert User.create(first_name: "John", last_name: "Rambo", email: "test@example.com")
+    assert User.create!(first_name: "John", last_name: "Rambo", email: "test@example.com")
     assert_raises ActiveRecord::RecordInvalid do
       User.create!(first_name: "John", last_name: "Rambo", email: "testmeexample.com")
     end
@@ -215,16 +215,23 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_has_name
-    assert Assignment.create(name: "Homework")
+    assert Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: 1)
     assert_raises ActiveRecord::RecordInvalid do
-      Assignment.create!(name: "")
+      Assignment.create!(name: "", percent_of_grade: nil, course_id: 1)
     end
   end
 
   def test_assignment_has_percent_of_grade
-    assert Assignment.create(name: "Homework",percent_of_grade: 20)
+    assert Assignment.create(name: "Homework",percent_of_grade: 20, course_id: 1)
     assert_raises ActiveRecord::RecordInvalid do
-      Assignment.create!(name: "Homework", percent_of_grade: nil)
+      Assignment.create!(name: "Homework", percent_of_grade: nil, course_id: 1)
+    end
+  end
+
+  def test_assignment_has_course_id
+    assert Assignment.create!(name: "Homework",percent_of_grade: 20, course_id: 1)
+    assert_raises ActiveRecord::RecordInvalid do
+      Assignment.create!(name: "Homework", percent_of_grade: 20, course_id: "")
     end
   end
 
