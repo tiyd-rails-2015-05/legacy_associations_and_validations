@@ -5,7 +5,9 @@ class Course < ActiveRecord::Base
   has_many :course_instructors, dependent: :restrict_with_error
   has_many :readings, through: :lessons
   has_many :assignments, dependent: :destroy
-  validates :course_code, presence: true
+  validates :course_code, presence: true, uniqueness: { scope: :term_id}
+  validates :course_code, format: { with: /\A[a-zA-Z]{3,}.*\d{3}\z/i}, :allow_nil => true
+
 
   default_scope { order("courses.term_id DESC, courses.course_code, courses.id DESC") }
 

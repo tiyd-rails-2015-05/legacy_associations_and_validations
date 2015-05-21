@@ -369,5 +369,19 @@ def test_reading_url_uses_http
   end
 end
 
+def test_format_of_course_code
+  assert Course.create!(name: "Psych", course_code: "ABC123")
+  assert_raises ActiveRecord::RecordInvalid do
+    Course.create!(name: "Psych", course_code: /\A(\W|\d|\s)/)
+  end
+end
+
+def test_course_code_unique_if_same_term_id
+  assert Course.create!(name: "Psych", course_code: "ABC123", term_id: 1)
+  assert_raises ActiveRecord::RecordInvalid do
+    assert Course.create!(name: "Psych", course_code: "ABC123", term_id: 1)
+  end
+end
+
 
 end
