@@ -9,11 +9,20 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true
   validate :valid_email
+  validate :valid_photo_url
+
+  private def valid_photo_url
+    return if photo_url.class == NilClass
+    search = photo_url.scan(/\w+:\/\/[\w\W]+/)
+    if search == ""
+      errors.add(:photo_url, 'Invalid URL')
+    end
+  end
 
   private def valid_email
-    search = email.scan(/(\w+)(@)(\w+)(.)(\w+)/).join
+    search = email.scan(/\w+@\w+.\w+/)
     if search == ""
-      errors.add(:email, 'error message')
+      errors.add(:email, 'Invalid email')
     end
   end
 
