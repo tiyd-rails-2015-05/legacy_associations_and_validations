@@ -17,13 +17,71 @@ ActiveRecord::Base.establish_connection(
 begin ApplicationMigration.migrate(:down); rescue; end
 ApplicationMigration.migrate(:up)
 
-
+ActiveRecord::Migration.verbose = false
 # Finally!  Let's test the thing.
 class ApplicationTest < Minitest::Test
+
+  def setup
+    ApplicationMigration.migrate(:up)
+  end
+
+  def teardown
+    ApplicationMigration.migrate(:down)
+  end
 
   def test_truth
     assert true
   end
+
+  def test_lessons_associates_with_readings
+    biology = Lesson.create(name: "Biology")
+    chemistry = Lesson.create(name: "Chemistry")
+    evolution = Reading.create(lesson_id: biology.id)
+    big_band = Reading.create(lesson_id: biology.id)
+    atoms = Reading.create(lesson_id: chemistry.id)
+
+    assert_equal 2, biology.readings.count
+    assert_equal 1, evolution.lesson_id
+    assert_equal 2, atoms.lesson_id
+  end
+
+  def test_courses_associates_with_lessons
+    fifth = Course.create(name: "Fifth")
+    sixth = Course.create(name: "Sixth")
+    biology = Lesson.create(course_id: fifth.id)
+    chemistry = Lesson.create(course_id: fifth.id)
+    geometry = Lesson.create(course_id: sixth.id)
+
+    assert_equal 2, fifth.lessons.count
+    assert_equal 1, biology.course_id
+    assert_equal 2, geometry.course_id
+  end
+
+  def test_courses_instructors_associates_with_courses
+    course1 = Course.create(name: "Course1")
+    course2 = Course.create(name: "Course2")
+    susan = CourseInstructor.create(course_id: course2.id)
+    jimmy = CourseInstructor.create(course_id: course1.id)
+    lisa = CourseInstructor.create(course_id: course2.id)
+
+
+    assert_equal 2, course2.course_instructors.count
+    assert_equal 1, jimmy.course_id
+    assert_equal 2, susan.course_id
+  end
+  # def test_readings_destroy_with_lessons
+  #   biology = Lesson.create(name: "Biology")
+  #   evolution = Reading.create(lesson_id: biology.id)
+  #   big_band = Reading.create(lesson_id: biology.id)
+  #
+  #   assert_equal 2, biology.readings.count
+  #
+  #   biology.remove
+  #   p biology
+  #   p evolution
+  #
+  #
+  # end
 
   def test_schools_must_have_name
     sanderson = School.new(name: "Sanderson High")
