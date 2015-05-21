@@ -1,5 +1,5 @@
 class Reading < ActiveRecord::Base
-  #validates :field, format: {with: /\A(https?:\/\/)\w/i}
+  validates :url, format: {with: /\A(https?:\/\/)\w/i}, presence: true
 
   validates :order_number, presence: true
   validates :lesson_id, presence: true
