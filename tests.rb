@@ -213,7 +213,6 @@ class ApplicationTest < Minitest::Test
     refute homework_2.save
 
     homework_3 = Assignment.create(name: "homework", course_id: 3144, percent_of_grade: 50.02)
-
     assert homework_3.save
   end
 
