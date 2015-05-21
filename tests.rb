@@ -73,47 +73,16 @@ class ApplicationTest < Minitest::Test
     refute free_play.save
   end
 
-  def test_readings_destroyed_with_lessons
-    world_war_2 = Lesson.create(name: "World War 2")
-    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
-    assert_equal 1, Lesson.count
-    world_war_2.destroy
-    assert_equal 0, Lesson.count
-  end
-
-  def test_lessons_destroyed_with_courses
-    us_history = Course.create(name: "US History")
-    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
-    assert_equal 1, Course.count
-    us_history.destroy
-    assert_equal 0, Course.count
-  end
-
-
   def test_lessons_readings_association
     world_war_2 = Lesson.create(name: "World War 2")
     american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
-    assert_equal american_involvement, world_war_2.readings.first
+    assert_equal 1, Lesson.count
   end
 
-  def test_lessons_associated_courses
-    us_history = Course.create(name: "US History")
+  def test_lessons_destroyed_with_courses
+    us_history = Course.create(name: "US History",course_code: 2451)
     world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
     assert_equal 1, us_history.lessons.count
-  end
-
-  def test_courses_associated_course_instructors
-    us_history = Course.create(name: "US History")
-    mr_turner = CourseInstructor.create(course_id: us_history.id)
-    assert_equal mr_turner, us_history.course_instructors.first
-  end
-
-  def test_courses_with_students_no_delete
-    us_history = Course.create(name: "US History")
-    mr_turner = CourseInstructor.create(course_id: us_history.id)
-    assert_equal 1, Course.count
-    us_history.explode
-    assert_equal 1, Course.count
   end
 
   def test_readings_must_have_attributes
@@ -137,5 +106,49 @@ class ApplicationTest < Minitest::Test
     refute blank.save
   end
 
+
+  def test_courses_associated_course_instructors
+    us_history = Course.create(name: "US History",course_code: 2451)
+    mr_turner = CourseInstructor.create(course_id: us_history.id)
+    assert_equal mr_turner, us_history.course_instructors.first
+  end
+
+  def test_courses_with_instructors_no_delete
+    us_history = Course.create(name: "US History",course_code: 2451)
+    mr_turner = CourseInstructor.create(course_id: us_history.id)
+    assert_equal 1, Course.count
+    us_history.destroy
+    assert_equal 1, Course.count
+  end
+
+  def test_lessons_associated_courses
+    us_history = Course.create(name: "US History", course_code: 2451)
+    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
+    assert_equal 1, Course.count
+    us_history.destroy
+    assert_equal 0, Course.count
+  end
+
+
+  def test_readings_destroyed_with_lessons
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id)
+    assert_equal 1, Lesson.count
+    world_war_2.destroy
+    assert_equal 0, Lesson.count
+  end
+
+  def test_lessons_readings_association
+    world_war_2 = Lesson.create(name: "World War 2")
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id,order_number: 4,  url: "http://www.thebest.com")
+    assert_equal american_involvement, world_war_2.readings.first
+  end
+
+  def test_course_association_with_readings
+    us_history = Course.create(name: "US History", course_code: 2451)
+    world_war_2 = Lesson.create(name: "World War 2", course_id: us_history.id)
+    american_involvement = Reading.create(caption: "American Involvement", lesson_id: world_war_2.id, order_number: 4, url: "http://www.thebest.com")
+    assert_equal american_involvement, us_history.readings.first
+  end
 
 end
