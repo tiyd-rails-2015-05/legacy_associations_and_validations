@@ -167,4 +167,11 @@ class ApplicationTest < Minitest::Test
     refute spring.save
   end
 
+  def test_user_validation
+    scott = User.create(first_name: "Scott", last_name: "Williams", email: "blah@blah.com")
+    turner = User.create(first_name: "Turner", last_name: "Davis")
+
+    assert scott.save
+    refute turner.save
+  end
 end
