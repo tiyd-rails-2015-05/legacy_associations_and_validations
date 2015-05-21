@@ -182,4 +182,12 @@ class ApplicationTest < Minitest::Test
     assert scott.save
     refute turner.save
   end
+
+  def test_email_validation
+    scott = User.create(first_name: "Scott", last_name: "Williams", email: "blah@blah.co")
+    turner = User.create(first_name: "Turner", last_name: "Davis", email: "blah@blah.com")
+
+    refute scott.save
+    assert turner.save
+  end
 end

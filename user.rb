@@ -4,6 +4,8 @@ class User < ActiveRecord::Base
   validates :last_name, presence: true
   validates :email, presence: true
   validates :email, uniqueness: true
+  validates :email, format: { with: /\w*@.*\.\w{3}/, on: :create }
+
 
   scope :want_to_be_instructors, -> { where(wants_to_be_instructor: true) }
   scope :instructors_for_school_id, ->(school_id) { where(school_id: school_id, instructor: true) }
