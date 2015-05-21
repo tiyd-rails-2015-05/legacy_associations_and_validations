@@ -4,6 +4,8 @@ class Assignment < ActiveRecord::Base
 
   delegate :code_and_name, :color, to: :course, prefix: true
 
+  has_one :lesson
+
   def status(user = nil)
     AssignmentStatus.new(assignment: self, user: user)
   end

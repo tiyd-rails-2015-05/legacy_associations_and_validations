@@ -9,6 +9,7 @@ class Lesson < ActiveRecord::Base
   # VVMY CODEVV
   has_many :readings, dependent: :destroy
   belongs_to :course
+  belongs_to :in_class_assignment
 
 
   def self.linked_to_assignment(assignment)
