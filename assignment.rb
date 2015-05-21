@@ -1,6 +1,7 @@
 class Assignment < ActiveRecord::Base
 
   validates :name, presence: true
+  validates :percent_of_grade, presence: true
 
   scope :active_for_students, -> { where("active_at <= ? AND due_at >= ? AND students_can_submit = ?", Time.now, Time.now, true) }
 
