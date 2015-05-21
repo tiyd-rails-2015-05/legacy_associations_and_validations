@@ -200,7 +200,22 @@ class ApplicationTest < Minitest::Test
   def test_validates_assign_attributes
     homework = Assignment.create(name: "homework", course_id: 3344)
     refute homework.save
+    homework = Assignment.create(name: "homework", course_id: 3344, percent_of_grade: 50.01)
+    assert homework.save
   end
 
-  #course_id, name, and percent_of_grade
+  def test_assignment_name_unique
+    history = Course.create(name: "history", course_code: 56)
+    homework = Assignment.create(name: "homework", course_id: 3344, percent_of_grade: 50.01)
+    assert homework.save
+
+    homework_2 = Assignment.create(name: "homework", course_id: 3344, percent_of_grade: 50.02)
+    refute homework_2.save
+
+    homework_3 = Assignment.create(name: "homework", course_id: 3144, percent_of_grade: 50.02)
+
+    assert homework_3.save
+  end
+
+
 end
