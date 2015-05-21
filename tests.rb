@@ -285,7 +285,7 @@ class ApplicationTest < Minitest::Test
 
   def test_assignment_courses_association
     aero = Course.create(name: "Intro to Aero", course_code: "ABC123")
-    cruise_altitude = Assignment.new(name: "Cruise Altitude")
+    cruise_altitude = Assignment.new(name: "Cruise Altitude", percent_of_grade: 20, course_id: 1)
 
     aero.add_assignment(cruise_altitude)
 
