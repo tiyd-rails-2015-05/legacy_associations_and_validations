@@ -38,7 +38,7 @@ class ApplicationTest < Minitest::Test
 
   def test_add_reading_to_lesson
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"http://google.com", lesson_id: 1)
 
     assert lesson_one.add_reading(reading_one)
     assert_equal lesson_one.id, Reading.last.lesson_id
@@ -46,8 +46,8 @@ class ApplicationTest < Minitest::Test
 
   def test_lesson_has_many_readings
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
-    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"ign.com", lesson_id: 1)
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"https://google.com", lesson_id: 1)
+    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"http://ign.com", lesson_id: 1)
     lesson_one.add_reading(reading_one)
     lesson_one.add_reading(reading_two)
 
@@ -56,8 +56,8 @@ class ApplicationTest < Minitest::Test
 
   def test_destroy_lesson_with_reading
     lesson_one = Lesson.create(name: "Lesson One")
-    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"google.com", lesson_id: 1)
-    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"ign.com", lesson_id: 1)
+    reading_one = Reading.create(order_number: 1, caption:"Reading One", url:"http://google.com", lesson_id: 1)
+    reading_two = Reading.create(order_number: 2, caption:"Reading Two", url:"http://ign.com", lesson_id: 1)
     lesson_one.add_reading(reading_one)
     lesson_one.add_reading(reading_two)
 
@@ -359,6 +359,13 @@ def test_courses_have_course_code
   assert Course.create(name: "Psych", course_code: "ABC123")
   assert_raises ActiveRecord::RecordInvalid do
     Course.create!(course_code: "")
+  end
+end
+
+def test_reading_url_uses_http
+  assert Reading.create!(order_number: 1, lesson_id: 1, url: "http://google.com")
+  assert_raises ActiveRecord::RecordInvalid do
+    Reading.create!(order_number: 1, lesson_id: 1, url: "google.com")
   end
 end
 
