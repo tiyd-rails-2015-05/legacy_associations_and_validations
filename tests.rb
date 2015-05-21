@@ -219,7 +219,7 @@ class ApplicationTest < Minitest::Test
     validation = Lesson.create(name: "Validation", course_id: rails.id)
     git_messes = Lesson.create(name: "Git Messes", course_id: rails.id)
     assert_equal 2, rails.lessons.count
-    assert_equal rails.id, validation.course_id
+    assert_equal rails, validation.course
   end
 
   def test_lessons_destroyed_with_course
@@ -236,7 +236,7 @@ class ApplicationTest < Minitest::Test
     mason = CourseInstructor.create(course_id: rails.id)
     assert_equal 1, rails.course_instructors.count
     assert_equal [mason], rails.course_instructors
-    assert_equal rails.id, mason.course_id
+    assert_equal rails, mason.course
   end
 
   def test_courses_with_instructors_cant_be_destroyed
