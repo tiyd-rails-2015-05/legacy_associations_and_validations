@@ -1,7 +1,7 @@
 # Basic test requires
 require 'minitest/autorun'
 require 'minitest/pride'
-
+require 'byebug'
 # Include both the migration and the app itself
 require './migration'
 require './application'
@@ -41,22 +41,26 @@ class ApplicationTest < Minitest::Test
     band_course = Course.create(name: "Marching Band")
     students = CourseStudent.create(student_id: 1, course_id: band_course.id)
 
-    band_course.destroy
+    refute band_course.destroy
   end
 
 #how do I test this????=========================================================
-  # def test_assignments_are_destroyed_when_courses_are_destroyed
-  #   band_course = Course.create(name: "Marching Band")
-  #   assignment = Assignment.create(name: "Malaguena", course_id: band_course.id )
-  #
-  #
-  #   band_course.destroy
-  #   assert_equal band_course , assignment
-  # end
-  #  ============================================================================
-  # def test_lessons_and_pre_assign
-  #
-  # end
+  def test_assignments_are_destroyed_when_courses_are_destroyed
+    band_course = Course.create(name: "Marching Band")
+    assignment = Assignment.create(name: "Malaguena", course_id: band_course.id )
+
+    band_course.destroy
+    assert_equal 0 , Assignment.count
+  end
+  # ============================================================================
+  def test_stupid_one
+   scales = Lesson.create(name: "Scales")
+   pre = Assignment.create(name: "Read Book")
+   Lesson.linked_to_assignment(pre)
+   scales.update(pre_class_assignment_id: pre.id)
+   assert scales.save
+   assert_equal pre.id, scales.pre_class_assignment_id
+ end
 
 
   def test_school_set_up
@@ -78,6 +82,28 @@ class ApplicationTest < Minitest::Test
     assert symphony_course
   end
 
+  def test_lessons_have_name
+    scales =  Lesson.create(name: "Scales")
+    assert scales
+
+
+  end
+
+
+  # def test_reading_has_url_order_number_and_lesson_id
+  #   read =  Reading.new(order_number: nil, url:"String", lesson_id: 1)
+  #
+  #   assert read.save
+  #   #refute read({})
+  # end
+
+  # def test_readings_start_with_proper_syntax
+  #
+  # end
+
+  def method_name
+
+  end
 
 
 

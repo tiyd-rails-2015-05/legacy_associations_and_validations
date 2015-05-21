@@ -1,5 +1,8 @@
 class Assignment < ActiveRecord::Base
+#  has_many :pre_class_assignment, class_name:"Lesson", foreign_key: "pre_class_assignment_id"
+#  has_many :in_class_assignment, class_name: "Lesson", foreign_key: "in_class_assignment_id"
   belongs_to :courses
+  belongs_to :lessons
 
   scope :active_for_students, -> { where("active_at <= ? AND due_at >= ? AND students_can_submit = ?", Time.now, Time.now, true) }
 
