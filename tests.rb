@@ -32,6 +32,7 @@ class ApplicationTest < Minitest::Test
   end
 
   #Person A
+
   def test_stupid_one
     equations = Lesson.create!(name: "Equations")
     worksheet = Assignment.create!(name: "Worksheet", course_id: equations.id, percent_of_grade: 15)
@@ -341,6 +342,13 @@ class ApplicationTest < Minitest::Test
     assert_raises(ActiveRecord::RecordInvalid) do
       Assignment.create!(name: "Essay", course_id: 1, percent_of_grade: 10)
     end
+  end
+
+  def test_in_class_assignments_associated_with_lesson
+    val = Lesson.create(name: "Validation", course_id: 1)
+    essay = Assignment.create(name: "Essay", course_id: 1, percent_of_grade: 15)
+    val.update(in_class_assignment_id: essay.id)
+    assert_equal essay, val.in_class_assignment
   end
 
 end

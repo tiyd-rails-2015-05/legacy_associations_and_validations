@@ -1,8 +1,8 @@
-# Legacy Associations and Validations
+# This ReadMe Does Not Get Over The Hump
 
-## Description
+## But We Didn't Forget About It
 
-Take an existing legacy codebase with no associations or validations and add them.
+That one test just took forever to pass and now that it's done, no more screen time, please. We'll update this later.
 
 ## Objectives
 

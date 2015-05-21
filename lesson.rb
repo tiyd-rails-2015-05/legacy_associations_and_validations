@@ -9,9 +9,11 @@ class Lesson < ActiveRecord::Base
 
   # after_save :update_cached_values
   has_many :readings, dependent: :destroy
+
   belongs_to :pre_class_assignment, class_name: "Assignment", foreign_key: "pre_class_assignment"
   belongs_to :in_class_assignment, class_name: "Assignment", foreign_key: "in_class_assignment"
   belongs_to :lessons
+
   validates :name, presence: true
 
 
