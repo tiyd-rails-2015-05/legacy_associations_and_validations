@@ -7,7 +7,15 @@ class User < ActiveRecord::Base
 
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, presence: true
+  validates :email, presence: true, uniqueness: true
+  validate :valid_email
+
+  private def valid_email
+    search = email.scan(/(\w+)(@)(\w+)(.)(\w+)/).join
+    if search == ""
+      errors.add(:email, 'error message')
+    end
+  end
 
   def full_name
     "#{title + " " if title}#{first_name} #{padded_middle_initial}#{last_name}"

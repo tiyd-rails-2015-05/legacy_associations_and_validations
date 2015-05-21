@@ -136,8 +136,15 @@ class ApplicationTest < Minitest::Test
   def test_validate_that_the_user_has_a_first_name_a_last_name_and_an_email
     # Validate that the User has a first_name, a last_name, and an email.
     user1 = User.new
-    user2 = User.new(first_name: "Big", last_name: "Bad", email: "Bob")
+    user2 = User.new(first_name: "Big", last_name: "Bad", email: "Bob@example.com")
     refute user1.save
     assert user2.save
+  end
+
+  def test_validate_that_the_users_email_is_unique_and_has_email_form
+    user1 = User.new(first_name: "Big", last_name: "Bad", email: "Bob@example.com")
+    user2 = User.new(first_name: "Big", last_name: "Bad", email: "Bob@example.com")
+    assert user1.save
+    refute user2.save
   end
 end
