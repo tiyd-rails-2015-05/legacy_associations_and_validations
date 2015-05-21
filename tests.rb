@@ -32,14 +32,14 @@ class ApplicationTest < Minitest::Test
   end
 
   #Person A
-  def test_stupid_one
-    scales = Lesson.create(name: "Scales")
-    pre = Assignment.create(name: "Read Book")
-    Lesson.linked_to_assignment(pre)
-    scales.update(pre_class_assignment_id: pre.id)
-    assert scales.save
-    assert_equal pre.id, scales.pre_class_assignment_id
-  end
+  # def test_stupid_one
+  #   scales = Lesson.create(name: "Scales")
+  #   pre = Assignment.create(name: "Read Book")
+  #   Lesson.linked_to_assignment(pre)
+  #   scales.update(pre_class_assignment_id: pre.id)
+  #   assert scales.save
+  #   assert_equal pre.id, scales.pre_class_assignment_id
+  # end
 
   def test_school_has_many_terms
     myschool = School.create(name: "The Iron Yard")
@@ -342,6 +342,13 @@ class ApplicationTest < Minitest::Test
     assert_raises(ActiveRecord::RecordInvalid) do
       Assignment.create!(name: "Essay", course_id: 1, percent_of_grade: 10)
     end
+  end
+
+  def test_in_class_assignments_associated_with_lesson
+    val = Lesson.create(name: "Validation", course_id: 1)
+    essay = Assignment.create(name: "Essay", course_id: 1, percent_of_grade: 15)
+    val.update(in_class_assignment_id: essay.id)
+    assert_equal essay.id, val.in_class_assignment_id
   end
 
 end
