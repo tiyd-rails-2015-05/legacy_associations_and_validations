@@ -4,6 +4,12 @@ class Assignment < ActiveRecord::Base
 
   delegate :code_and_name, :color, to: :course, prefix: true
 
+  has_one :lesson
+  validates :name, presence: true
+  validates :course_id, presence: true
+  validates :percent_of_grade, presence: true
+  validates :name, uniqueness: {scope: :course_id}
+
   def status(user = nil)
     AssignmentStatus.new(assignment: self, user: user)
   end
