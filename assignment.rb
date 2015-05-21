@@ -8,7 +8,7 @@ class Assignment < ActiveRecord::Base
   validates :name, presence: true
   validates :course_id, presence: true
   validates :percent_of_grade, presence: true
-
+  validates :name, uniqueness: {scope: :course_id}
 
   def status(user = nil)
     AssignmentStatus.new(assignment: self, user: user)

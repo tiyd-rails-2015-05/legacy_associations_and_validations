@@ -164,6 +164,14 @@ class ApplicationTest < Minitest::Test
     assignment2 = Assignment.new(course_id: 1, name: "string", percent_of_grade: 11.11)
     refute assignment1.save
     assert assignment2.save
+  end
 
+  def test_validate_that_the_assignment_name_is_unique_within_a_given_course_id
+    assignment1 = Assignment.new(course_id: 1, name: "string", percent_of_grade: 11.11)
+    assignment2 = Assignment.new(course_id: 1, name: "string", percent_of_grade: 11.11)
+    assignment3 = Assignment.new(course_id: 2, name: "string", percent_of_grade: 11.11)
+    assert assignment1.save
+    refute assignment2.save
+    assert assignment3.save
   end
 end
