@@ -32,6 +32,15 @@ class ApplicationTest < Minitest::Test
   end
 
   #Person A
+  def test_stupid_one
+    scales = Lesson.create(name: "Scales")
+    pre = Assignment.create(name: "Read Book")
+    Lesson.linked_to_assignment(pre)
+    scales.update(pre_class_assignment_id: pre.id)
+    assert scales.save
+    assert_equal pre.id, scales.pre_class_assignment_id
+  end
+
   def test_school_has_many_terms
     myschool = School.create(name: "The Iron Yard")
     fall = Term.create(school_id: myschool.id, name: "Fall", starts_on: 2015-05-04,

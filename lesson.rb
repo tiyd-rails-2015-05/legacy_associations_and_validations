@@ -9,7 +9,7 @@ class Lesson < ActiveRecord::Base
 
   # after_save :update_cached_values
   has_many :readings, dependent: :destroy
-  has_many :pre_class_assignments
+  belongs_to :pre_class_assignments
   belongs_to :lessons
   validates :name, presence: true
 
