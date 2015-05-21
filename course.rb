@@ -3,6 +3,14 @@ class Course < ActiveRecord::Base
   has_many :readings, through: :lessons
   has_many :course_instructors
 
+  belongs_to :terms
+  has_many :course_students, dependent: :restrict_with_error
+  has_many :assignments, dependent: :destroy
+
+  validates :course_code, presence: true
+  validates :course_code, uniqueness: true
+  validates :name, presence: true
+
 
   default_scope { order("courses.term_id DESC, courses.course_code, courses.id DESC") }
 
