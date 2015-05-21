@@ -35,7 +35,6 @@ class ApplicationTest < Minitest::Test
   def test_stupid_one
     equations = Lesson.create!(name: "Equations")
     worksheet = Assignment.create!(name: "Worksheet", course_id: equations.id, percent_of_grade: 15)
-    Lesson.linked_to_assignment(worksheet)
     equations.update(pre_class_assignment_id: worksheet.id)
     assert equations.save
     assert_equal worksheet.id, equations.pre_class_assignment_id
