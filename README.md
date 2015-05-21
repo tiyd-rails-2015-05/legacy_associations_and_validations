@@ -21,7 +21,7 @@ Given existing code we added associations and validations to it. The two people 
 * Validate that the `course_code` is unique within a given `term_id`.
 * Validate that the `course_code` starts with three letters and ends with three numbers.  Use a regular expression.
 
-John Greiner:
+### John Greiner:
 * Associate `lessons` with `readings` (both directions).  When a lesson is destroyed, its readings should be automatically destroyed.
 * Associate `lessons` with `courses` (both directions).  When a course is destroyed, its lessons should be automatically destroyed.
 * Associate `courses` with `course_instructors` (both directions).  If the course has any students associated with it, the course should not be deletable.
