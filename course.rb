@@ -155,7 +155,7 @@ class Course < ActiveRecord::Base
     time_cards
   end
 
-  def assign_student(student)
+  def add_student(student)
     course_students << student
   end
 

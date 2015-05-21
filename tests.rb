@@ -224,7 +224,7 @@ class ApplicationTest < Minitest::Test
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
     aero = Course.new(name: "Intro to Aero")
 
-    fall_term.assign_course(aero)
+    fall_term.add_course(aero)
 
     assert_equal fall_term.id, Course.last.term_id
   end
@@ -233,7 +233,7 @@ class ApplicationTest < Minitest::Test
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
     aero = Course.new(name: "Intro to Aero")
 
-    fall_term.assign_course(aero)
+    fall_term.add_course(aero)
 
     refute Term.last.destroy
   end
@@ -242,7 +242,7 @@ class ApplicationTest < Minitest::Test
     aero = Course.create(name: "Intro to Aero")
     john = CourseStudent.new(student_id: 1)
 
-    aero.assign_student(john)
+    aero.add_student(john)
 
     refute Course.last.destroy
   end
@@ -265,6 +265,30 @@ class ApplicationTest < Minitest::Test
     assert aero.destroy
     assert_equal 0, Course.count
     assert_equal 0, Assignment.count
+  end
+
+  def test_school_has_many_courses
+    ncsu = School.create(name: "NCSU")
+    fall_term = Term.create(name: "Fall")
+    spring_term = Term.create(name: "Spring")
+    ncsu.assign_term(fall_term)
+    ncsu.assign_term(spring_term)
+    fall_term.save
+    spring_term.save
+
+    aero = Course.create(name: "Intro to Aero")
+    structures = Course.create(name: "Aerospace Structures")
+    cfd = Course.create(name: "CFD")
+
+    fall_term.add_course(aero)
+    fall_term.add_course(structures)
+    spring_term.add_course(cfd)
+
+    aero.save
+    structures.save
+    cfd.save
+
+    assert ncsu.courses.count
   end
 
 end

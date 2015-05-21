@@ -15,7 +15,7 @@ class Term < ActiveRecord::Base
     school ? school.name : "None"
   end
 
-  def assign_course(course)
+  def add_course(course)
     courses << course
   end
 
