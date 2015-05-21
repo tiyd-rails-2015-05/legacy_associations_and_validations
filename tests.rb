@@ -151,4 +151,9 @@ class ApplicationTest < Minitest::Test
     assert_equal american_involvement, us_history.readings.first
   end
 
+  def test_school_must_have_name
+    cedar_ridge = School.create({})
+    refute cedar_ridge.save
+  end
+
 end
