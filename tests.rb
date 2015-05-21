@@ -247,4 +247,24 @@ class ApplicationTest < Minitest::Test
     refute Course.last.destroy
   end
 
+  def test_assignment_courses_association
+    aero = Course.create(name: "Intro to Aero")
+    cruise_altitude = Assignment.new(name: "Cruise Altitude")
+
+    aero.add_assignment(cruise_altitude)
+
+    assert_equal aero.id, Assignment.last.course_id
+  end
+
+  def test_delete_course_also_deletes_assignments
+    aero = Course.create(name: "Intro to Aero")
+    cruise_altitude = Assignment.new(name: "Cruise Altitude")
+
+    aero.add_assignment(cruise_altitude)
+
+    assert aero.destroy
+    assert_equal 0, Course.count
+    assert_equal 0, Assignment.count
+  end
+
 end
