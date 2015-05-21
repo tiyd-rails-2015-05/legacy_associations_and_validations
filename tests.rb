@@ -37,9 +37,9 @@ class ApplicationTest < Minitest::Test
   def test_lessons_associates_with_readings
     biology = Lesson.create(name: "Biology")
     chemistry = Lesson.create(name: "Chemistry")
-    evolution = Reading.create(lesson_id: biology.id)
-    big_band = Reading.create(lesson_id: biology.id)
-    atoms = Reading.create(lesson_id: chemistry.id)
+    evolution = Reading.create(lesson_id: biology.id, url: "https://time.com", order_number: 2)
+    big_band = Reading.create(lesson_id: biology.id, url: "https://time.com", order_number: 3)
+    atoms = Reading.create(lesson_id: chemistry.id, url: "https://time.com", order_number: 1)
 
     assert_equal 2, biology.readings.count
     assert_equal 1, evolution.lesson_id
@@ -47,11 +47,11 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_courses_associates_with_lessons
-    fifth = Course.create(name: "Fifth")
-    sixth = Course.create(name: "Sixth")
-    biology = Lesson.create(course_id: fifth.id)
-    chemistry = Lesson.create(course_id: fifth.id)
-    geometry = Lesson.create(course_id: sixth.id)
+    fifth = Course.create(name: "Fifth", course_code: "SCI40")
+    sixth = Course.create(name: "Sixth", course_code: "SCI30")
+    biology = Lesson.create(name: "Biology", course_id: fifth.id)
+    chemistry = Lesson.create(name: "Chemistry", course_id: fifth.id)
+    geometry = Lesson.create(name: "Geometry", course_id: sixth.id)
 
     assert_equal 2, fifth.lessons.count
     assert_equal 1, biology.course_id
@@ -59,8 +59,8 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_courses_instructors_associates_with_courses
-    course1 = Course.create(name: "Course1")
-    course2 = Course.create(name: "Course2")
+    course1 = Course.create(name: "Course1", course_code: "ACT1")
+    course2 = Course.create(name: "Course2", course_code: "DEV2")
     susan = CourseInstructor.create(course_id: course2.id)
     jimmy = CourseInstructor.create(course_id: course1.id)
     lisa = CourseInstructor.create(course_id: course2.id)
@@ -70,19 +70,18 @@ class ApplicationTest < Minitest::Test
     assert_equal 1, jimmy.course_id
     assert_equal 2, susan.course_id
   end
-  # def test_readings_destroy_with_lessons
-  #   biology = Lesson.create(name: "Biology")
-  #   evolution = Reading.create(lesson_id: biology.id)
-  #   big_band = Reading.create(lesson_id: biology.id)
-  #
-  #   assert_equal 2, biology.readings.count
-  #
-  #   biology.remove
-  #   p biology
-  #   p evolution
-  #
-  #
-  # end
+
+  def test_readings_destroy_with_lessons
+    biology = Lesson.create(name: "Biology")
+    evolution = Reading.create(lesson_id: biology.id)
+    big_band = Reading.create(lesson_id: biology.id)
+
+    assert_equal 2, biology.readings.count
+
+    biology.destroy
+    p biology
+    p evolution
+  end
 
   def test_schools_must_have_name
     sanderson = School.new(name: "Sanderson High")

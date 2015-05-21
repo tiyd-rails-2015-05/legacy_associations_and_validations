@@ -1,10 +1,9 @@
 class Reading < ActiveRecord::Base
-  validates :url, format: {with: /\A(https?:\/\/)\w/i}, presence: true
+  belongs_to :lessons
 
+  validates :url, format: {with: /\A(https?:\/\/)\w/i}, presence: true
   validates :order_number, presence: true
   validates :lesson_id, presence: true
-  validates :url, presence: true
-  belongs_to :lessons
 
   default_scope { order('order_number') }
 
