@@ -242,7 +242,7 @@ class ApplicationTest < Minitest::Test
     assert_equal 0 , Assignment.count
   end
 
-  def test_stupid_one
+  def test_lessons_associates_with_preclass_assignment
    scales = Lesson.create(name: "Scales")
    pre = Assignment.create(name: "Read Book")
    Lesson.linked_to_assignment(pre)
