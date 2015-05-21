@@ -349,7 +349,7 @@ class ApplicationTest < Minitest::Test
     val = Lesson.create(name: "Validation", course_id: 1)
     essay = Assignment.create(name: "Essay", course_id: 1, percent_of_grade: 15)
     val.update(in_class_assignment_id: essay.id)
-    assert_equal essay.id, val.in_class_assignment_id
+    assert_equal essay, val.in_class_assignment
   end
 
 end
