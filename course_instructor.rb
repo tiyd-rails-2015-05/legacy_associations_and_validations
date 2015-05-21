@@ -1,3 +1,3 @@
 class CourseInstructor < ActiveRecord::Base
-  has_many :courses
+  belongs_to :courses, dependent: :restrict_with_errors
 end

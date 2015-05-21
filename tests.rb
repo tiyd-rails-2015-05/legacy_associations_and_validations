@@ -45,7 +45,7 @@ class ApplicationTest < Minitest::Test
     assert_equal 2, atoms.lesson_id
   end
 
-  def test_courses_associates_with_readings
+  def test_courses_associates_with_lessons
     fifth = Course.create(name: "Fifth")
     sixth = Course.create(name: "Sixth")
     biology = Lesson.create(course_id: fifth.id)
@@ -55,6 +55,19 @@ class ApplicationTest < Minitest::Test
     assert_equal 2, fifth.lessons.count
     assert_equal 1, biology.course_id
     assert_equal 2, geometry.course_id
+  end
+
+  def test_courses_instructors_associates_with_courses
+    course1 = Course.create(name: "Course1")
+    course2 = Course.create(name: "Course2")
+    susan = CourseInstructor.create(course_id: course2.id)
+    jimmy = CourseInstructor.create(course_id: course1.id)
+    lisa = CourseInstructor.create(course_id: course2.id)
+
+
+    assert_equal 2, course2.course_instructors.count
+    assert_equal 1, jimmy.course_id
+    assert_equal 2, susan.course_id
   end
   # def test_readings_destroy_with_lessons
   #   biology = Lesson.create(name: "Biology")
