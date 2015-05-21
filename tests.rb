@@ -34,12 +34,13 @@ class ApplicationTest < Minitest::Test
 
   def test_school_term_association
     ews = School.create(name: "EWS")
-    spring = Term.create(name: "spring", school_id: ews.id)
+    spring = Term.create(name: "spring", school_id: ews.id, starts_on: '2013-04-04', ends_on: '2014-04-04')
     assert_equal spring, ews.terms.first
   end
 
   def test_term_course_association
-    spring = Term.create(name: "spring")
+    ews = School.create(name: "EWS")
+    spring = Term.create(name: "spring", starts_on: '2015-04-04', ends_on: '2012-03-03', school_id: ews.id)
     math = Course.create(name: "calc 2", term_id: spring.id, course_code: 56)
     assert_equal math, spring.courses.first
     refute spring.destroy
@@ -61,7 +62,7 @@ class ApplicationTest < Minitest::Test
 
   def test_school_course_association
     ews = School.create(name: "EWS")
-    spring = Term.create(name: "spring", school_id: ews.id)
+    spring = Term.create(name: "spring", starts_on: '2015-03-03', ends_on: '2015-05-05', school_id: ews.id)
     math = Course.create(name: "calc 2", term_id: spring.id,course_code: 56)
     assert_equal math, ews.courses.first
   end
@@ -152,8 +153,18 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_school_must_have_name
-    cedar_ridge = School.create({})
+    cedar_ridge = School.new({})
     refute cedar_ridge.save
+    cedar_ridge = School.new(name: "Cedar Ridge")
+    assert cedar_ridge.save
+  end
+
+  def test_terms_validation
+    cedar_ridge = School.create(name: "Cedar Ridge")
+    spring = Term.create({})
+    fall = Term.create(name: "fall", starts_on: '2001-02-03', ends_on: '2001-05-04', school_id: cedar_ridge.id)
+    assert fall.save
+    refute spring.save
   end
 
 end
