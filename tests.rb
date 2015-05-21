@@ -84,7 +84,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_destroying_course_destroys_lessons
-    math = Course.create(name: "math", course_code: "123")
+    math = Course.create(name: "math", course_code: "ABC123")
     lesson_one = Lesson.create(name: "Lesson One")
     lesson_two = Lesson.create(name: "Lesson Two")
     math.add_lesson(lesson_one)
@@ -222,7 +222,7 @@ class ApplicationTest < Minitest::Test
 
   def test_term_course_association
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
-    aero = Course.new(name: "Intro to Aero", course_code: "123")
+    aero = Course.new(name: "Intro to Aero", course_code: "ABC123")
 
     fall_term.add_course(aero)
 
@@ -231,7 +231,7 @@ class ApplicationTest < Minitest::Test
 
   def test_term_with_courses_cant_be_deleted
     fall_term = Term.create(name: "Fall", starts_on: "06/05/15", ends_on: "12/01/15", school_id: 1)
-    aero = Course.new(name: "Intro to Aero", course_code: "123")
+    aero = Course.new(name: "Intro to Aero", course_code: "ABC123")
 
     fall_term.add_course(aero)
 
@@ -239,7 +239,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_course_student_association
-    aero = Course.create(name: "Intro to Aero", course_code: "123")
+    aero = Course.create(name: "Intro to Aero", course_code: "ABC123")
     john = CourseStudent.new(student_id: 1)
 
     aero.add_student(john)
@@ -248,7 +248,7 @@ class ApplicationTest < Minitest::Test
   end
 
   def test_assignment_courses_association
-    aero = Course.create(name: "Intro to Aero", course_code: "123")
+    aero = Course.create(name: "Intro to Aero", course_code: "ABC123")
     cruise_altitude = Assignment.new(name: "Cruise Altitude")
 
     aero.add_assignment(cruise_altitude)
@@ -320,7 +320,7 @@ def test_reading_has_url
 end
 
 def test_courses_have_course_code
-  assert Course.create(name: "Psych", course_code: "123")
+  assert Course.create(name: "Psych", course_code: "ABC123")
   assert_raises ActiveRecord::RecordInvalid do
     Course.create!(course_code: "")
   end
