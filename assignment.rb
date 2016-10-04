@@ -1,11 +1,27 @@
+require 'date'
+
 class Assignment < ActiveRecord::Base
 
   scope :active_for_students, -> { where("active_at <= ? AND due_at >= ? AND students_can_submit = ?", Time.now, Time.now, true) }
 
   delegate :code_and_name, :color, to: :course, prefix: true
 
+  belongs_to :course
+  has_many :lessons
+  has_many :assignment_grades
+  validates :name, presence: true, uniqueness: { scope: :course_id }
+  validates :course_id, presence: true
+  validates :percent_of_grade, presence: true
+  validate :check_due_date
+
   def status(user = nil)
     AssignmentStatus.new(assignment: self, user: user)
+  end
+
+  def check_due_date
+    if due_at && active_at
+      false if due_at <= active_at
+    end
   end
 
   def turn_in(answers, user, final=true)

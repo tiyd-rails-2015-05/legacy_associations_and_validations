@@ -5,6 +5,13 @@ class User < ActiveRecord::Base
 
   default_scope { order('last_name, first_name') }
 
+
+  validates :first_name, presence: true
+  validates :last_name, presence: true
+  validates :email, presence: true, uniqueness: true,
+    format: { with: /\A\w+@\w+\.\w{2,}\z/ }
+  validates :photo_url, format: { with: /https?:\/\//, allow_nil: true}
+
   def full_name
     "#{title + " " if title}#{first_name} #{padded_middle_initial}#{last_name}"
   end
